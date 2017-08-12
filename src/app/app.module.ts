@@ -9,6 +9,9 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+// Services
+import { NavigatorRefService } from './services/navigator-ref.service';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -20,7 +23,7 @@ import { AppComponent } from './app.component';
   declarations: [
     AppComponent
   ],
-  providers: [],
+  providers: [NavigatorRefService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
