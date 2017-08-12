@@ -5,10 +5,15 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --aot",
+    "build:prod": "ng build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy:hosting": "npm run build:prod && firebase deploy --only hosting",
+    "deploy:database": "firebase deploy --only database",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:all": "npm run build:prod && firebase deploy"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +40,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "~3.1.1",
+    "firebase-tools": "^3.9.2",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
