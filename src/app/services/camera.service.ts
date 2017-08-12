@@ -22,7 +22,7 @@ export class CameraService {
     return this._navigator.mediaDevices.getUserMedia(this.constraints);
   }
 
-  capture(): Promise<MediaStream> {
+  getStream(): Promise<MediaStream> {
     return this._navigator.mediaDevices
       .getUserMedia(this.constraints)
       .then((stream: MediaStream) => {
