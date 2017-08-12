@@ -5,6 +5,7 @@ import { NavigatorRefService } from './navigator-ref.service';
 @Injectable()
 export class CameraService {
   private _navigator: Navigator;
+  private constraints = { video: { facingMode: { exact: 'environment' } } };
 
   constructor(
     private navigatorService: NavigatorRefService
@@ -15,6 +16,18 @@ export class CameraService {
     } else {
       alert('Browser not supported');
     }
+  }
+
+  requestPermission(): Promise<MediaStream> {
+    return this._navigator.mediaDevices.getUserMedia(this.constraints);
+  }
+
+  capture(): Promise<MediaStream> {
+    return this._navigator.mediaDevices
+      .getUserMedia(this.constraints)
+      .then((stream: MediaStream) => {
+        return stream;
+      });
   }
 
 }
