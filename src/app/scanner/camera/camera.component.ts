@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { CameraService } from '../../services/camera.service';
+import { FileStorageService } from '../../services/file-storage.service';
 
 @Component({
   selector: 'app-camera',
@@ -8,22 +9,18 @@ import { CameraService } from '../../services/camera.service';
   styleUrls: ['./camera.component.css']
 })
 export class CameraComponent implements OnInit, OnDestroy {
-  private player;
-  private snapshot;
-  private context;
   imageTaken = false;
 
   constructor(
-    public camera: CameraService
+    public camera: CameraService,
+    public file: FileStorageService
   ) { }
 
   ngOnInit(): void {
     // should show a reason to request first, then fire request.
     this.camera.requestPermission()
       .then(() => {
-        this.player = document.getElementById('viewport');
-        this.snapshot = document.getElementById('snapshot');
-        this.context = this.snapshot.getContext('2d');
+        this.camera.setElements();
         this.startStream();
       });
   }
@@ -33,20 +30,20 @@ export class CameraComponent implements OnInit, OnDestroy {
   }
 
   private startStream(): void {
-    this.camera.getStream()
-      .then((stream: MediaStream) => {
-        this.player.srcObject = stream;
-      });
+    this.camera.startStream();
   }
 
   private stopStream(): void {
-    this.player.srcObject.getVideoTracks()
-      .forEach(track => track.stop());
+    this.camera.stopStream();
   }
 
   capture(): void {
-    this.context.drawImage(this.player, 0, 0, this.snapshot.width, this.snapshot.height);
-    this.stopStream();
+    this.camera.capture();
+    this.camera.toBlob()
+      .then((blob: Blob) => {
+        console.log('Image Blob: ', blob);
+        this.file.upload('image', blob);
+      });
     this.imageTaken = true;
   }
 
