@@ -34,6 +34,7 @@ src/environments/*
 /coverage
 /libpeerconnection.log
 npm-debug.log
+firebase-debug.log
 testem.log
 /typings
 yarn-error.log
