@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 
 // Services
 import { NavigatorRefService } from './services/navigator-ref.service';
+import { TesseractJsRefService } from './services/tesseractjs-ref.service';
 
 @NgModule({
   imports: [
@@ -23,7 +24,7 @@ import { NavigatorRefService } from './services/navigator-ref.service';
   declarations: [
     AppComponent
   ],
-  providers: [NavigatorRefService],
+  providers: [NavigatorRefService, TesseractJsRefService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
