@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 
 // Services
 import { NavigatorRefService } from './services/navigator-ref.service';
+import { WindowRefService } from './services/window-ref.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
   imports: [
@@ -23,7 +25,7 @@ import { NavigatorRefService } from './services/navigator-ref.service';
   declarations: [
     AppComponent,
   ],
-  providers: [NavigatorRefService],
+  providers: [NavigatorRefService, WindowRefService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,7 +8,8 @@ import { SignUpComponent } from './signup/signup.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    AppRoutingModule,
   ],
   declarations: [
     ProfileComponent,
