@@ -39,10 +39,12 @@ export class CameraComponent implements OnInit, OnDestroy {
 
   capture(): void {
     this.camera.capture();
+    const d = new Date();
+    const n = d.getTime();
     this.camera.toBlob()
       .then((blob: Blob) => {
         console.log('Image Blob: ', blob);
-        this.file.upload('image', blob);
+        this.file.upload(n, blob);
       });
     this.imageTaken = true;
   }

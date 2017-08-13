@@ -15,7 +15,7 @@ export class FileStorageService {
       .refFromURL(this.bucket);
   }
 
-  upload(name: string, blob: Blob): void {
+  upload(name: string | number, blob: Blob): void {
     const ref = this.storageRef.child(`uploads/${name}`);
     ref.put(blob)
       .then(snapshot => {
