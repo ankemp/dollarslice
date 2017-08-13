@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { CameraService } from '../../services/camera.service';
 import { FileStorageService } from '../../services/file-storage.service';
-import { TesseractJsService } from '../../services/tesseractjs.service';
 
 @Component({
   selector: 'app-camera',
@@ -15,7 +14,6 @@ export class CameraComponent implements OnInit, OnDestroy {
   constructor(
     public camera: CameraService,
     public file: FileStorageService,
-    public tesseract: TesseractJsService,
   ) { }
 
   ngOnInit(): void {
