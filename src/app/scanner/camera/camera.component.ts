@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { CameraService } from '../../services/camera.service';
-import { FileStorageService } from '../../services/file-storage.service';
 
 @Component({
   selector: 'app-camera',
@@ -13,7 +12,6 @@ export class CameraComponent implements OnInit, OnDestroy {
 
   constructor(
     public camera: CameraService,
-    public file: FileStorageService,
   ) { }
 
   ngOnInit(): void {
@@ -39,13 +37,7 @@ export class CameraComponent implements OnInit, OnDestroy {
 
   capture(): void {
     this.camera.capture();
-    const d = new Date();
-    const n = d.getTime();
-    this.camera.toBlob()
-      .then((blob: Blob) => {
-        console.log('Image Blob: ', blob);
-        this.file.upload(n, blob);
-      });
+    this.camera.save();
     this.imageTaken = true;
   }
 

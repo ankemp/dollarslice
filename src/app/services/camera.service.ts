@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
 
+import { FileStorageService } from './file-storage.service';
 import { NavigatorRefService } from './navigator-ref.service';
 
 @Injectable()
@@ -12,7 +14,9 @@ export class CameraService {
   public context: CanvasRenderingContext2D;
 
   constructor(
-    private navigatorService: NavigatorRefService
+    public db: AngularFireDatabase,
+    public file: FileStorageService,
+    private navigatorService: NavigatorRefService,
   ) {
     this._navigator = navigatorService.nativeNavigator;
     if (this._navigator.mediaDevices && this._navigator.mediaDevices.getUserMedia) {
@@ -51,12 +55,37 @@ export class CameraService {
     this.stopStream();
   }
 
-  toBlob(): Promise<Blob> {
+  private createDbEntry(): firebase.database.ThenableReference {
+    const d = new Date();
+    const n = d.getTime();
+    const list = this.db.list('/images');
+    return list.push({ user: 'test', status: 'new', timestamp: n, rTimestamp: 0 - n });
+  }
+
+  private toBlob(): Promise<Blob> {
     return new Promise(Resolve => {
       this.snapshot.toBlob(blob => {
         return Resolve(blob);
       });
     });
+  }
+
+  save(): void {
+    this.createDbEntry()
+      .then(snapshot => Promise.resolve(snapshot))
+      .then((dbSnapshot: firebase.database.ThenableReference) => {
+        this.toBlob()
+          .then((blob: Blob) => {
+            return dbSnapshot.update({ status: 'uploading' })
+              .then(() => {
+                return this.file.upload(dbSnapshot.key, blob, 'images');
+              });
+          })
+          .then(fileSnapshot => fileSnapshot.ref.fullPath)
+          .then(path => {
+            return dbSnapshot.update({ status: 'ocr_queued', image: path });
+          });
+      });
   }
 
 }

@@ -15,12 +15,9 @@ export class FileStorageService {
       .refFromURL(this.bucket);
   }
 
-  upload(name: string | number, blob: Blob): void {
-    const ref = this.storageRef.child(`uploads/${name}`);
-    ref.put(blob)
-      .then(snapshot => {
-        console.log(snapshot);
-      });
+  upload(name: string | number, blob: Blob, path = 'uploads'): firebase.storage.UploadTask {
+    const ref = this.storageRef.child(`${path}/${name}`);
+    return ref.put(blob);
   }
 
 }
