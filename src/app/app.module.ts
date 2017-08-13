@@ -21,7 +21,7 @@ import { NavigatorRefService } from './services/navigator-ref.service';
     AngularFireAuthModule,
   ],
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   providers: [NavigatorRefService],
   bootstrap: [AppComponent]
