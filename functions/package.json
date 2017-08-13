@@ -5,6 +5,7 @@
     "@google-cloud/storage": "^1.2.1",
     "firebase-admin": "~4.2.1",
     "firebase-functions": "^0.5.7",
+    "mkdirp-promise": "^5.0.1",
     "tesseract.js": "^1.0.10"
   },
   "private": true
