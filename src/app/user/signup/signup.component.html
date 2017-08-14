@@ -1,3 +1,10 @@
-<p>
-  signup works!
-</p>
+<h1>Sign Up!</h1>
+<div [ngClass]="{'show': !signUpSubmitted}" class="signup-container">
+  <input type="tel" [(ngModel)]="phoneNumber">
+  <button type="submit" (click)="signUpSubmit()">Sign Up</button>
+</div>
+<div [ngClass]="{'show': signUpSubmitted}" class="confirm-container">
+  <input type="number" [(ngModel)]="confirmationCode">
+  <button type="submit" (click)="signUpConfirm()">Confirm</button>
+</div>
+<div id="recaptcha-container"></div>

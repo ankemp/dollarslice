@@ -1,0 +1,9 @@
+
+.signup-container,
+.confirm-container {
+  display: none;
+}
+
+.show {
+  display: block;
+}
