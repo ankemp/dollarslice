@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthGuard } from './auth.guard';
+
 const routes: Routes = [
-  { path: '', loadChildren: 'app/scanner/scanner.module#ScannerModule' },
+  { path: '', loadChildren: 'app/scanner/scanner.module#ScannerModule', canActivate: [AuthGuard] },
   { path: 'user', loadChildren: 'app/user/user.module#UserModule' },
 ];
 
