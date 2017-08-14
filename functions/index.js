@@ -29,7 +29,10 @@ exports.ocrProcessListener = functions.storage.object()
         return itemRef.child('serial').set(serial);
       })
       .then(() => statusRef.set('complete'))
-      .catch(() => statusRef.set('error'));
+      .catch(err => {
+        console.log(err);
+        return statusRef.set('error');
+      });
   });
 
 function lookForSerial(data) {
