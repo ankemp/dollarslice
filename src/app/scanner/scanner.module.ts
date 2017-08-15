@@ -4,7 +4,6 @@ import { AppRoutingModule } from './scanner-routing.module';
 import { AngularFireModule } from 'angularfire2';
 
 import { CameraService } from '../services/camera.service';
-import { FileStorageService } from '../services/file-storage.service';
 
 import { CameraComponent } from './camera/camera.component';
 
@@ -17,6 +16,6 @@ import { CameraComponent } from './camera/camera.component';
   declarations: [
     CameraComponent
   ],
-  providers: [CameraService, FileStorageService]
+  providers: [CameraService]
 })
 export class ScannerModule { }
