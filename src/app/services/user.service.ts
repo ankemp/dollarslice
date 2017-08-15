@@ -5,9 +5,9 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class UserService {
+  private confirmation: firebase.auth.ConfirmationResult;
   private recaptchaVerifier: firebase.auth.RecaptchaVerifier;
-  private confirmationResult: firebase.auth.ConfirmationResult;
-  user: Observable<firebase.User>;
+  public user: Observable<firebase.User>;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -15,29 +15,37 @@ export class UserService {
     this.user = afAuth.authState;
   }
 
-  private signInSuccess(confirmationResult: firebase.auth.ConfirmationResult): void {
-    // SMS sent. Prompt user to type the code from the message, then sign the
-    // user in with confirmationResult.confirm(code).
-    this.confirmationResult = confirmationResult;
-    console.log('signInSuccess', confirmationResult);
-  }
-
-  private signInError(error): void {
-    console.error('signInError', error);
-  }
-
   registerRecaptcha(): void {
     this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
   }
 
-  signIn(phoneNumber: string): void {
-    this.afAuth.auth.signInWithPhoneNumber(phoneNumber, this.recaptchaVerifier)
-      .then(this.signInSuccess)
-      .catch(this.signInError);
+  signIn(phoneNumber: string): Promise<null | Error> {
+    return new Promise((Resolve, Reject) => {
+      this.afAuth.auth.signInWithPhoneNumber(phoneNumber, this.recaptchaVerifier)
+        .then(confirmationResult => {
+          this.confirmation = confirmationResult;
+          return Resolve();
+        })
+        .catch(err => {
+          console.error(err);
+          return Reject(err);
+        });
+
+    });
   }
 
-  signInConfirmation(confirmCode: string): void {
-    this.confirmationResult.confirm(confirmCode);
+  signInConfirmation(confirmCode: string): Promise<null | Error> {
+    return new Promise((Resolve, Reject) => {
+      this.confirmation.confirm(confirmCode)
+        .then((result) => {
+          console.log(result);
+          return Resolve();
+        })
+        .catch((err) => {
+          console.log(err);
+          return Reject(err);
+        });
+    });
   }
 
   logout(): void {
