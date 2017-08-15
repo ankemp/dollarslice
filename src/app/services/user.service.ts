@@ -21,7 +21,8 @@ export class UserService {
 
   signIn(phoneNumber: string): Promise<null | Error> {
     return new Promise((Resolve, Reject) => {
-      this.afAuth.auth.signInWithPhoneNumber(phoneNumber, this.recaptchaVerifier)
+      this.afAuth.auth
+        .signInWithPhoneNumber(phoneNumber, this.recaptchaVerifier)
         .then(confirmationResult => {
           this.confirmation = confirmationResult;
           return Resolve();
@@ -36,7 +37,8 @@ export class UserService {
 
   signInConfirmation(confirmCode: string): Promise<null | Error> {
     return new Promise((Resolve, Reject) => {
-      this.confirmation.confirm(confirmCode)
+      this.confirmation
+        .confirm(confirmCode)
         .then((result) => {
           console.log(result);
           return Resolve();
