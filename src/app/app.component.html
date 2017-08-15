@@ -1,4 +1,7 @@
 <div class="nav">
   <h1 class="title">DollarSlice</h1>
+  <div *ngIf="(user | async)" class="user">
+    <button (click)="logout()">Logout</button>
+  </div>
 </div>
 <router-outlet></router-outlet>

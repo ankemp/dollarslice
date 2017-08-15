@@ -4,6 +4,8 @@
 
 .nav {
   background-color: transparent;
+  display: flex;
+  justify-content: space-between;
   margin: 0 8px 8px;
   position: absolute;
   top: 0;
@@ -14,4 +16,9 @@
   color: #ffffff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   margin: 0;
+}
+
+.user {
+  display: flex;
+  align-items: center;
 }
