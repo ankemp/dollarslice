@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthGuard } from '../auth.guard';
+
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './signup/signup.component';
@@ -10,7 +12,7 @@ const routes: Routes = [
     path: '',
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'profile' },
-      { path: 'profile', component: ProfileComponent },
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: SignUpComponent },
     ]
