@@ -10,7 +10,7 @@ export class UserService {
   public user: Observable<firebase.User>;
 
   constructor(
-    public afAuth: AngularFireAuth,
+    private afAuth: AngularFireAuth,
   ) {
     this.user = afAuth.authState;
   }
@@ -50,6 +50,33 @@ export class UserService {
 
   logout(): void {
     this.afAuth.auth.signOut();
+  }
+
+  updateProfile(field: string, value: string): Promise<null | Error> {
+    return new Promise((Resolve, Reject) => {
+      const sub = this.user.subscribe(state => {
+        if (state) {
+          switch (field) {
+            case 'email':
+              state.updateEmail(value).then(Resolve).catch(Reject);
+              break;
+
+            case 'displayName':
+              state.updateProfile({ displayName: value, photoURL: state.photoURL });
+              break;
+
+            case 'photoURL':
+              state.updateProfile({ displayName: state.displayName, photoURL: value });
+              break;
+
+            default:
+              Reject(new Error('No field given'));
+              break;
+          }
+        }
+      });
+      sub.unsubscribe();
+    });
   }
 
 }
