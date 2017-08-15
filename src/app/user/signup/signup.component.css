@@ -1,6 +1,7 @@
 
 .signup-container,
-.confirm-container {
+.confirm-container,
+.recaptcha-container {
   display: none;
 }
 

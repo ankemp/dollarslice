@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service';
 export class SignUpComponent implements OnInit {
   public phoneNumber = '';
   public signUpSubmitted = false;
+  public captchaSubmitted = false;
   public confirmationCode = '';
   public confirmationSubmitted = false;
 
@@ -30,12 +31,25 @@ export class SignUpComponent implements OnInit {
     if (this.phoneNumber.length === 10) {
       this.phoneNumber = `+1${this.phoneNumber}`;
     }
-    this.userService.signIn(this.phoneNumber);
+    this.userService.signIn(this.phoneNumber)
+      .then(() => {
+        this.captchaSubmitted = true;
+      })
+      .catch(err => {
+        // handle error
+      });
   }
 
   signUpConfirm(): void {
     this.confirmationSubmitted = true;
-    this.userService.signInConfirmation(this.confirmationCode);
+    this.confirmationCode = this.confirmationCode.toString();
+    this.userService.signInConfirmation(this.confirmationCode)
+      .then(() => {
+        // Welcome & redirect to profile? Home?
+      })
+      .catch(err => {
+        // handle error
+      });
   }
 
 }

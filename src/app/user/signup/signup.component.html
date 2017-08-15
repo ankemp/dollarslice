@@ -3,8 +3,8 @@
   <input type="tel" [(ngModel)]="phoneNumber">
   <button type="submit" (click)="signUpSubmit()">Sign Up</button>
 </div>
-<div [ngClass]="{'show': signUpSubmitted}" class="confirm-container">
+<div [ngClass]="{'show': !confirmationSubmitted && captchaSubmitted}" class="confirm-container">
   <input type="number" [(ngModel)]="confirmationCode">
   <button type="submit" (click)="signUpConfirm()">Confirm</button>
 </div>
-<div id="recaptcha-container"></div>
+<div [ngClass]="{'show': !captchaSubmitted}" class="recaptcha-container" id="recaptcha-container"></div>
