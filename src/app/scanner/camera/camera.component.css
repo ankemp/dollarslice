@@ -37,8 +37,11 @@
     to{transform:rotate(360deg);}
 }
 
-.status-container .material-icons {
+.status-container .material-icons.spin {
   animation: 3s spinnerRotate infinite linear;
+}
+
+.status-container .material-icons {
   font-size: 48px;
 }
 
