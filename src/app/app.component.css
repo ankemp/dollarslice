@@ -6,10 +6,9 @@
   background-color: transparent;
   display: flex;
   justify-content: space-between;
-  margin: 0 8px 8px;
-  position: absolute;
+  margin: 8px 8px;
+  position: relative;
   top: 0;
-  width: calc(100% - 16px);
 }
 
 .title {
