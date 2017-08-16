@@ -53,7 +53,7 @@ function lookForSerial(data) {
            */
           return (/\b[A-Z]{1}\d{8}[A-Z]{1}\b|\b[A-Z]{1} \d{8} [A-Z]{1}\b/.test(text));
         });
-        if (match.length) {
+        if (matched.length) {
           // Take last item
           matched = matched.pop();
           // Standardize serial numbers (no whitespace)
