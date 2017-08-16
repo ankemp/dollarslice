@@ -1,8 +1,8 @@
 <div class="viewport-container" [ngClass]="{'show': !imageTaken}">
   <video id="viewport" class="viewport" autoplay></video>
-  <button class="capture" (click)="capture()">Capture</button>
+  <button class="capture" (click)="capture()"><i class="material-icons">camera</i></button>
 </div>
 <div class="snapshot-container" [ngClass]="{'show': imageTaken}">
-  <canvas id="snapshot" class="snapshot" width="500" height="700"></canvas>
-  <button class="retake" (click)="reset()">Retake</button>
+  <canvas id="snapshot" class="snapshot" width="500" height="500"></canvas>
+  <button class="retake" (click)="reset()"><i class="material-icons">undo</i></button>
 </div>
