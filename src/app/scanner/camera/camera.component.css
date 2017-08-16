@@ -27,8 +27,19 @@
 }
 
 .status-container {
-  text-align: center;
+  font-size: 18px;
   margin: 8px;
+  text-align: center;
+}
+
+@keyframes spinnerRotate {
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+.status-container .material-icons {
+  animation: 3s spinnerRotate infinite linear;
+  font-size: 48px;
 }
 
 .action-container {

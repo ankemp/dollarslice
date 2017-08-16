@@ -3,7 +3,7 @@
     <video id="viewport" autoplay></video>
   </div>
   <div class="status-container">
-    <p>Scan you dollar to get started</p>
+    Scan your dollar to get started
   </div>
   <div class="action-container">
     <button (click)="capture()"><i class="material-icons">camera</i></button>
@@ -14,9 +14,10 @@
     <canvas id="snapshot" width="500" height="500"></canvas>
   </div>
   <div *ngIf="(image | async)" class="status-container">
-    <p>Status: {{ (image | async)?.status }}</p>
+    <i class="material-icons">autorenew</i>
+    <div class="status">{{ (image | async)?.status }}</div>
   </div>
-  <div class="action-container">
+  <div *ngIf="!(image | async)" class="action-container">
     <button (click)="reset()"><i class="material-icons">undo</i></button>
     <button (click)="upload()"><i class="material-icons">file_upload</i></button>
   </div>
