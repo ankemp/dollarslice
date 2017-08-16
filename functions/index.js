@@ -31,6 +31,9 @@ exports.ocrProcessListener = functions.storage.object()
       .then(() => statusRef.set('complete'))
       .catch(err => {
         console.log(err);
+        if (err.message) {
+          return statusRef.set(err.message);
+        }
         return statusRef.set('error');
       });
   });
@@ -50,13 +53,16 @@ function lookForSerial(data) {
            */
           return (/\b[A-Z]{1}\d{8}[A-Z]{1}\b|\b[A-Z]{1} \d{8} [A-Z]{1}\b/.test(text));
         });
-        // Take last item
-        matched = matched.pop();
-        // Standardize serial numbers (no whitespace)
-        matched = matched.replace(' ', '');
-        return Resolve(matched);
+        if (match.length) {
+          // Take last item
+          matched = matched.pop();
+          // Standardize serial numbers (no whitespace)
+          matched = matched.replace(' ', '');
+          return Resolve(matched);
+        }
+        return Reject({ code: 204, message: 'error_no_serial' });
       }
     }
-    return Reject('data is not an array');
+    return Reject({ code: 204, message: 'error_no_text' });
   });
 }
