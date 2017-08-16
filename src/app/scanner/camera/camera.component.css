@@ -5,9 +5,6 @@
 .viewport-container,
 .snapshot-container {
   display: none;
-  height: 350px;
-  max-width: 100%;
-  overflow: hidden;
 }
 
 .viewport-container.show,
@@ -17,24 +14,41 @@
 
 .viewport,
 .snapshot {
+  height: 350px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.viewport video,
+.snapshot canvas {
   height: 100%;
   object-fit: cover;
   width: 100%;
 }
 
-.capture, .retake {
+.status-container {
+  text-align: center;
+  margin: 8px;
+}
+
+.action-container {
+  bottom: 20px;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  width: 100%;
+}
+.action-container button {
   appearance: none;
   background-color: transparent;
   border: 0;
-  bottom: 20px;
-  display: inline;
   height: 60px;
-  position: absolute;
-  text-align: center;
-  width: 100%;
 }
 
-.capture .material-icons,
-.retake .material-icons {
+.action-container button + button {
+  margin-left: 20px;
+}
+
+.action-container button .material-icons {
   font-size: 60px;
 }
