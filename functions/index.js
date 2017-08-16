@@ -31,7 +31,7 @@ exports.ocrProcessListener = functions.storage.object()
       .then(() => statusRef.set('complete'))
       .catch(err => {
         console.log(err);
-        if (err.message) {
+        if (typeof err.code !== 'undefined' && err.code === 204) {
           return statusRef.set(err.message);
         }
         return statusRef.set('error');
@@ -41,7 +41,11 @@ exports.ocrProcessListener = functions.storage.object()
 function lookForSerial(data) {
   return new Promise((Resolve, Reject) => {
     if (Array.isArray(data)) {
-      const text = data[0].textAnnotations[0].description;
+      let text = data[0].textAnnotations;
+      console.log(text);
+      if (typeof text !== 'undefined' && Array.isArray(text) && text.length !== 0) {
+        text = text[0].description;
+      }
       const textItems = text.split('\n');
       if (textItems.length) {
         let matched = textItems.filter(text => {
