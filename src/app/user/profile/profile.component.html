@@ -1,3 +1,11 @@
-<p>
-  profile works!
-</p>
+<h1>My Account</h1>
+<div class="profile">
+  <div class="field-container" (click)="startEdit('name')">
+    <span class="title">Name</span>
+    <input type="text" placeholder="Name" [(ngModel)]="profileFields.displayName" />
+  </div>
+  <div class="field-container" (click)="startEdit('email')">
+    <span class="title">Email</span>
+    <input type="email" placeholder="Email" [(ngModel)]="profileFields.email" />
+  </div>
+</div>
