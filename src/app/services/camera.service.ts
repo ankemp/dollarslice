@@ -70,22 +70,27 @@ export class CameraService {
     });
   }
 
-  save(): void {
-    this.createDbEntry()
-      .then(snapshot => Promise.resolve(snapshot))
-      .then((dbSnapshot: firebase.database.ThenableReference) => {
-        this.toBlob()
-          .then((blob: Blob) => {
-            return dbSnapshot.update({ status: 'uploading' })
-              .then(() => {
-                return this.file.upload(dbSnapshot.key, blob, 'images');
-              });
-          })
-          .then(fileSnapshot => fileSnapshot.ref.fullPath)
-          .then(path => {
-            return dbSnapshot.update({ status: 'ocr_queued', image: path });
-          });
-      });
+  save(): Promise<string> {
+    return new Promise(Resolve => {
+      this.createDbEntry()
+        .then(snapshot => {
+          Resolve(snapshot.key);
+          return Promise.resolve(snapshot);
+        })
+        .then((dbSnapshot: firebase.database.ThenableReference) => {
+          this.toBlob()
+            .then((blob: Blob) => {
+              return dbSnapshot.update({ status: 'uploading' })
+                .then(() => {
+                  return this.file.upload(dbSnapshot.key, blob, 'images');
+                });
+            })
+            .then(fileSnapshot => fileSnapshot.ref.fullPath)
+            .then(path => {
+              return dbSnapshot.update({ status: 'ocr_queued', image: path });
+            });
+        });
+    });
   }
 
 }
