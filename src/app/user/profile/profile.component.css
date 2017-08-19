@@ -1,33 +1,18 @@
-
-.field-container {
-  align-items: center;
-  border: 1px solid lightgrey;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-  padding: 8px;
-  width: 100%;
+.profile {
+  margin-top: 1em;
 }
 
-.field-content {
+.field-container,
+.input-container {
   align-items: center;
   display: flex;
   justify-content: flex-start;
-  width: 80%;
+  margin-left: 1em;
 }
 
 input[type=text],
 input[type=email] {
-  border: 1px solid grey;
-  height: 100%;
-  padding: 6px;
-}
-
-input[type=text],
-input[type=email],
-button.done {
-  display: none;
+  width: calc(100% - 1em);
 }
 
 button.done,
@@ -35,18 +20,21 @@ button.edit {
   appearance: none;
   background-color: transparent;
   border: 0;
-  padding: 4px;
+  padding: 0.5em;
 }
 
 button.edit {
   margin-left: auto;
 }
 
-.field-container.active input,
-.field-container.active button.done {
-  display: block;
+.input-container {
+  display: none;
 }
 
-.field-container.active .field-content {
+.pure-form.active .input-container {
+  display: flex;
+}
+
+.pure-form.active .field-container {
   display: none;
 }

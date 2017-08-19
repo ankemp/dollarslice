@@ -1,23 +1,30 @@
 <div class="app-container">
-  <h1>My Account</h1>
+  <h2 class="hug">My Account</h2>
+
   <div class="profile">
-    <div [ngClass]="{'active': checkField('name')}" class="field-container">
-      <span class="title">Name</span>
-      <div class="field-content">
+    <div [ngClass]="{'active': checkField('name')}" class="pure-form">
+      <label for="name-field">Display Name</label>
+      <div class="field-container">
         <span *ngIf="profileFields.displayName">{{ profileFields.displayName }}</span>
         <button class="edit" (click)="startEdit('name')"><i class="material-icons">mode_edit</i></button>
       </div>
-      <input id="name-field" type="text" placeholder="Name" [(ngModel)]="profileFields.displayName" />
-      <button class="done" (click)="updateDisplayName()"><i class="material-icons">done</i></button>
+      <div class="input-container">
+        <input id="name-field" type="text" placeholder="Name" [(ngModel)]="profileFields.displayName" />
+        <button class="done" (click)="updateDisplayName()"><i class="material-icons">done</i></button>
+      </div>
     </div>
-    <div [ngClass]="{'active': checkField('email')}" class="field-container" (click)="startEdit('email')">
-      <span class="title">Email</span>
-      <div class="field-content">
-        <span>{{ profileFields.email }}</span>
+
+    <div [ngClass]="{'active': checkField('email')}" class="pure-form" (click)="startEdit('email')">
+      <label for="email-field">Email</label>
+      <div class="field-container">
+        <span *ngIf="profileFields.email">{{ profileFields.email }}</span>
         <button class="edit" (click)="startEdit('email')"><i class="material-icons">mode_edit</i></button>
       </div>
-      <input id="email-field" type="email" placeholder="Email" [(ngModel)]="profileFields.email" />
-      <button class="done" (click)="updateEmail()"><i class="material-icons">done</i></button>
+      <div class="input-container">
+        <input id="email-field" type="email" placeholder="Email" [(ngModel)]="profileFields.email" />
+        <button class="done" (click)="updateEmail()"><i class="material-icons">done</i></button>
+      </div>
     </div>
   </div>
+
 </div>

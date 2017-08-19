@@ -1,12 +1,21 @@
 <div class="app-container">
-  <h1>Sign Up!</h1>
-  <div [ngClass]="{'show': !signUpSubmitted}" class="signup-container">
-    <input type="tel" [(ngModel)]="phoneNumber">
-    <button type="submit" (click)="signUpSubmit()">Sign Up</button>
+  <h2 class="hug">Sign Up!</h2>
+
+  <div class="signup">
+    <div [ngClass]="{'show': !signUpSubmitted}" class="pure-form">
+      <legend>What's your number?</legend>
+      <input type="tel" placeholder="+1 (555) 555-5555" [(ngModel)]="phoneNumber">
+      <button class="pure-button pure-button-primary" (click)="signUpSubmit()">Sign Up</button>
+      <p class="fineprint">While we don't charge anything to send you this SMS verification code, your carriers standard SMS rates do apply.</p>
+    </div>
+
+    <div id="recaptcha-container" [ngClass]="{'show': !captchaSubmitted}" class="pure-form recaptcha"></div>
+
+    <div [ngClass]="{'show': !confirmationSubmitted && captchaSubmitted}" class="pure-form">
+      <legend>What's the code we texted you?</legend>
+      <input type="number" placeholder="123456" [(ngModel)]="confirmationCode">
+      <button class="pure-button pure-button-primary" (click)="signUpConfirm()">Confirm</button>
+    </div>
   </div>
-  <div [ngClass]="{'show': !confirmationSubmitted && captchaSubmitted}" class="confirm-container">
-    <input type="number" [(ngModel)]="confirmationCode">
-    <button type="submit" (click)="signUpConfirm()">Confirm</button>
-  </div>
-  <div [ngClass]="{'show': !captchaSubmitted}" class="recaptcha-container" id="recaptcha-container"></div>
+
 </div>

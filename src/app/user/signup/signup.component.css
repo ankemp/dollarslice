@@ -1,10 +1,24 @@
+.signup {
+  margin-top: 1em;
+}
 
-.signup-container,
-.confirm-container,
-.recaptcha-container {
+input {
+  width: 100%;
+}
+
+.pure-form {
   display: none;
 }
 
-.show {
+.pure-form.show {
   display: block;
+}
+
+.pure-form .pure-button {
+  margin-top: 0;
+}
+
+.fineprint {
+  font-size: 60%;
+  line-height: 1rem;
 }
