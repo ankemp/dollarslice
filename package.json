@@ -32,6 +32,7 @@
     "purecss": "^1.0.0",
     "rxjs": "^5.4.2",
     "tesseract.js": "^1.0.10",
+    "typebase.css": "^0.5.0",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
