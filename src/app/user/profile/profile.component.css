@@ -1,0 +1,52 @@
+
+.field-container {
+  align-items: center;
+  border: 1px solid lightgrey;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 8px;
+  width: 100%;
+}
+
+.field-content {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  width: 80%;
+}
+
+input[type=text],
+input[type=email] {
+  border: 1px solid grey;
+  height: 100%;
+  padding: 6px;
+}
+
+input[type=text],
+input[type=email],
+button.done {
+  display: none;
+}
+
+button.done,
+button.edit {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  padding: 4px;
+}
+
+button.edit {
+  margin-left: auto;
+}
+
+.field-container.active input,
+.field-container.active button.done {
+  display: block;
+}
+
+.field-container.active .field-content {
+  display: none;
+}

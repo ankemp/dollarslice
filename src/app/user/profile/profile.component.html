@@ -1,13 +1,23 @@
 <div class="app-container">
   <h1>My Account</h1>
   <div class="profile">
-    <div class="field-container" (click)="startEdit('name')">
+    <div [ngClass]="{'active': checkField('name')}" class="field-container">
       <span class="title">Name</span>
-      <input type="text" placeholder="Name" [(ngModel)]="profileFields.displayName" />
+      <div class="field-content">
+        <span *ngIf="profileFields.displayName">{{ profileFields.displayName }}</span>
+        <button class="edit" (click)="startEdit('name')"><i class="material-icons">mode_edit</i></button>
+      </div>
+      <input id="name-field" type="text" placeholder="Name" [(ngModel)]="profileFields.displayName" />
+      <button class="done" (click)="updateDisplayName()"><i class="material-icons">done</i></button>
     </div>
-    <div class="field-container" (click)="startEdit('email')">
+    <div [ngClass]="{'active': checkField('email')}" class="field-container" (click)="startEdit('email')">
       <span class="title">Email</span>
-      <input type="email" placeholder="Email" [(ngModel)]="profileFields.email" />
+      <div class="field-content">
+        <span>{{ profileFields.email }}</span>
+        <button class="edit" (click)="startEdit('email')"><i class="material-icons">mode_edit</i></button>
+      </div>
+      <input id="email-field" type="email" placeholder="Email" [(ngModel)]="profileFields.email" />
+      <button class="done" (click)="updateEmail()"><i class="material-icons">done</i></button>
     </div>
   </div>
 </div>

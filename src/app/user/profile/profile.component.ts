@@ -37,24 +37,58 @@ export class ProfileComponent implements OnInit {
 
   startEdit(fieldName: string): void {
     this.activeField = fieldName;
+    setTimeout(() => {
+      document.getElementById(`${fieldName}-field`).focus();
+    }, 50);
+  }
+
+  checkField(fieldName: string): boolean {
+    return (this.activeField === fieldName);
+  }
+
+  private validateEmail(email: string): boolean {
+    return (/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email));
   }
 
   updateEmail(): void {
-    const email = this.profileFields.email;
-    // do email validation
-    this.userService.updateProfile('email', email);
+    const { email } = this.profileFields;
+    if (this.validateEmail(email)) {
+      this.userService.updateProfile('email', email)
+        .then((() => this.successProfileEdit()))
+        .catch(err => {
+          console.error(err);
+        });
+    } else {
+      console.error('updateEmail() - Email invalid');
+    }
+  }
+
+  private validateDisplayName(displayName: string): boolean {
+    return (/^[a-zA-Z0-9'!#$%&'*+/=?^_`{|}~.-]*$/.test(displayName));
   }
 
   updateDisplayName(): void {
-    const displayName = this.profileFields.displayName;
-    // do displayName validation
-    this.userService.updateProfile('displayName', displayName);
+    const { displayName } = this.profileFields;
+    if (this.validateDisplayName(displayName)) {
+      this.userService.updateProfile('displayName', displayName)
+        .then((() => this.successProfileEdit()))
+        .catch(err => {
+          console.error(err);
+        });
+    } else {
+      console.error('updateDisplayName() - displayName invalid');
+    }
   }
 
   updateProfileImage(): void {
     // this.fileService.upload().then(() => {
     //   this.userService.updateProfile('profileURL', )
     // })
+  }
+
+  private successProfileEdit(): void {
+    this.endEdit();
+    console.log('Profile Updated');
   }
 
 }
