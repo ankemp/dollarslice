@@ -56,19 +56,22 @@ export class UserService {
 
   updateProfile(field: string, value: string): Promise<null | Error> {
     return new Promise((Resolve, Reject) => {
-      const sub = this.user.subscribe(state => {
+      this.user.subscribe(state => {
         if (state) {
           switch (field) {
             case 'email':
-              state.updateEmail(value).then(Resolve).catch(Reject);
+              state.updateEmail(value)
+                .then(Resolve).catch(Reject);
               break;
 
             case 'displayName':
-              state.updateProfile({ displayName: value, photoURL: state.photoURL });
+              state.updateProfile({ displayName: value, photoURL: state.photoURL })
+                .then(Resolve).catch(Reject);
               break;
 
             case 'photoURL':
-              state.updateProfile({ displayName: state.displayName, photoURL: value });
+              state.updateProfile({ displayName: state.displayName, photoURL: value })
+                .then(Resolve).catch(Reject);
               break;
 
             default:
@@ -77,7 +80,6 @@ export class UserService {
           }
         }
       });
-      sub.unsubscribe();
     });
   }
 
