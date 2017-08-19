@@ -17,8 +17,4 @@ export class AppComponent {
     this.user = userService.user;
   }
 
-  logout(): void {
-    this.userService.logout();
-  }
-
 }

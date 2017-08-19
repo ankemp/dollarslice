@@ -31,6 +31,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+
+  logout(): void {
+    this.userService.logout();
+  }
+
   endEdit(): void {
     this.activeField = '';
   }

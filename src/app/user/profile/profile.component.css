@@ -38,3 +38,17 @@ button.edit {
 .pure-form.active .field-container {
   display: none;
 }
+
+.logout {
+  border-top: 1px solid #D4D4D4;
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+  padding-top: 1em;
+  width: 100%;
+}
+
+.logout button {
+  background-color: rgb(202, 60, 60);
+  color: #fff;
+}

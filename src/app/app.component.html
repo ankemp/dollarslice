@@ -2,7 +2,6 @@
   <a href="#" routerLink="/"><img src="./assets/logo.png" alt="DollarSlice" /></a>
   <div *ngIf="(user | async)" class="user">
     <button routerLink="/user/profile"><i class="material-icons">person</i></button>
-    <button (click)="logout()">Logout</button>
   </div>
 </div>
 <router-outlet></router-outlet>
