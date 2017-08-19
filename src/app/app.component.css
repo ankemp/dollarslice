@@ -20,4 +20,15 @@
 .user {
   display: flex;
   align-items: center;
+
+}
+
+button {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.user button + button {
+  margin-left: 8px;
 }
