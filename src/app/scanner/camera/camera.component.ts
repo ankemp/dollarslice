@@ -22,19 +22,11 @@ export class CameraComponent implements OnInit, OnDestroy {
     this.camera.requestPermission()
       .then(() => {
         this.camera.setElements();
-        this.startStream();
+        this.camera.startStream();
       });
   }
 
   ngOnDestroy(): void {
-    this.stopStream();
-  }
-
-  private startStream(): void {
-    this.camera.startStream();
-  }
-
-  private stopStream(): void {
     this.camera.stopStream();
   }
 
@@ -52,6 +44,6 @@ export class CameraComponent implements OnInit, OnDestroy {
 
   reset(): void {
     this.imageTaken = false;
-    this.startStream();
+    this.camera.stopStream();
   }
 }
