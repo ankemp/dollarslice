@@ -1,3 +1,20 @@
 <div class="app-container">
   <h2 class="hug">Login</h2>
+
+  <div class="login">
+    <div [ngClass]="{'show': !signInSubmitted}" class="pure-form">
+      <legend>Hey! Welcome back. You know the drill, what's your number?</legend>
+      <input type="tel" placeholder="+1 (555) 555-5555" [(ngModel)]="phoneNumber">
+      <button class="pure-button pure-button-primary" (click)="signInSubmit()">Sign In</button>
+      <p class="fineprint">While we don't charge anything to send you this SMS verification code, your carriers standard SMS rates do apply.</p>
+    </div>
+
+    <div id="recaptcha-container" [ngClass]="{'show': !captchaSubmitted}" class="pure-form recaptcha"></div>
+
+    <div [ngClass]="{'show': !confirmationSubmitted && captchaSubmitted}" class="pure-form">
+      <legend>What's the code we texted you?</legend>
+      <input type="number" placeholder="123456" [(ngModel)]="confirmationCode">
+      <button class="pure-button pure-button-primary" (click)="signInConfirm()">Confirm</button>
+    </div>
+  </div>
 </div>
