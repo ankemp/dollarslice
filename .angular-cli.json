@@ -19,7 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "../node_modules/purecss/build/base-min.css",
+        "../node_modules/purecss/build/base.css",
         "../node_modules/typebase.css/typebase.css",
         "../node_modules/purecss/build/grids-responsive.css",
         "../node_modules/purecss/build/forms.css",
