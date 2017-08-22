@@ -11,8 +11,15 @@
 }
 
 input[type=text],
-input[type=email] {
+input[type=email],
+input[type=file] {
   width: calc(100% - 1em);
+}
+
+.profile-image {
+  height: auto;
+  max-width: 250px;
+  width: calc(100% - 2em);
 }
 
 button.done,

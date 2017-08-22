@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div [ngClass]="{'active': checkField('email')}" class="pure-form" (click)="startEdit('email')">
+    <div [ngClass]="{'active': checkField('email')}" class="pure-form">
       <label for="email-field">Email</label>
       <div class="field-container">
         <span *ngIf="profileFields.email">{{ profileFields.email }}</span>
@@ -24,6 +24,22 @@
         <input id="email-field" type="email" placeholder="Email" [(ngModel)]="profileFields.email" />
         <button class="done" (click)="updateEmail()"><i class="material-icons">done</i></button>
       </div>
+    </div>
+  </div>
+
+  <div [ngClass]="{'active': checkField('photo')}" class="pure-form">
+    <label for="picture-field">Photo (1mb limit)</label>
+    <div class="field-container">
+      <img class="profile-image" src="{{ profileFields.photoURL }}" alt="Profile Image">
+      <button class="edit" (click)="startEdit('photo', false)">
+        <i class="material-icons">mode_edit</i>
+      </button>
+    </div>
+    <div class="input-container">
+      <input id="photo-field" type="file">
+      <button class="done" (click)="updateProfileImage()" [disabled]="profileUploading">
+        <i [ngClass]="{'material-icons-spin': profileUploading}" class="material-icons">{{ profileUploading ? 'autorenew' : 'file_upload' }}</i>
+      </button>
     </div>
   </div>
 

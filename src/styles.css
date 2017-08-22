@@ -5,3 +5,12 @@
 .app-container {
   margin: 8px;
 }
+
+@keyframes spinnerRotate {
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+.material-icons.material-icons-spin {
+  animation: 3s spinnerRotate infinite linear;
+}

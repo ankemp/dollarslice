@@ -14,7 +14,7 @@
     <canvas id="snapshot" width="500" height="500"></canvas>
   </div>
   <div *ngIf="(image | async)" class="status-container">
-    <i *ngIf="(image | async)?.status !== 'complete' && (image | async)?.status.indexOf('error') === -1" class="material-icons spin">autorenew</i>
+    <i *ngIf="(image | async)?.status !== 'complete' && (image | async)?.status.indexOf('error') === -1" class="material-icons material-icons-spin">autorenew</i>
     <i *ngIf="(image | async)?.status === 'complete'" class="material-icons">done</i>
     <i *ngIf="(image | async)?.status.indexOf('error') >= 0" class="material-icons">error</i>
     <div class="status">{{ (image | async)?.status }}</div>

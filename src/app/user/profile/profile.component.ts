@@ -12,6 +12,7 @@ import { FileStorageService } from '../../services/file-storage.service';
 export class ProfileComponent implements OnInit {
   public user: Observable<firebase.User>;
   public activeField = '';
+  public profileUploading = false;
   public profileFields = { displayName: '', email: '', photoURL: '' };
 
   constructor(
@@ -31,7 +32,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
   logout(): void {
     this.userService.logout();
   }
@@ -40,11 +40,13 @@ export class ProfileComponent implements OnInit {
     this.activeField = '';
   }
 
-  startEdit(fieldName: string): void {
+  startEdit(fieldName: string, focusField = true): void {
     this.activeField = fieldName;
-    setTimeout(() => {
-      document.getElementById(`${fieldName}-field`).focus();
-    }, 50);
+    if (focusField) {
+      setTimeout(() => {
+        document.getElementById(`${fieldName}-field`).focus();
+      }, 50);
+    }
   }
 
   checkField(fieldName: string): boolean {
@@ -85,10 +87,42 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  validateProfileImage(file: File): boolean {
+    if (!file.type.startsWith('image/')) {
+      return false;
+    }
+    if (file.size > 1000000) {
+      return false;
+    }
+    return true;
+  }
+
   updateProfileImage(): void {
-    // this.fileService.upload().then(() => {
-    //   this.userService.updateProfile('profileURL', )
-    // })
+    const input = <HTMLFormElement>document.getElementById('photo-field');
+    const file = input.files[0];
+    if (this.validateProfileImage(file)) {
+      this.profileUploading = true;
+      this.user.subscribe(state => {
+        if (state) {
+          this.fileService.upload(state.uid, file, 'users')
+            .then(fileSnapshot => {
+              this.profileUploading = false;
+              return fileSnapshot.downloadURL;
+            })
+            .then((filePath: string) => {
+              this.profileFields.photoURL = filePath;
+              return filePath;
+            })
+            .then((filePath: string) => this.userService.updateProfile('photoURL', filePath))
+            .then(() => this.successProfileEdit())
+            .catch(err => {
+              console.error(err);
+            });
+        }
+      });
+    } else {
+      console.error('updateProfileImage() - file error');
+    }
   }
 
   private successProfileEdit(): void {
