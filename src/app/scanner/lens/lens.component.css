@@ -1,0 +1,33 @@
+:host() {
+  display: block;
+}
+
+.viewport,
+.preview {
+  display: none;
+  height: 350px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.viewport video,
+.preview canvas {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.preview {
+  display: none;
+}
+
+.callout-text {
+  margin-top: 0.5em;
+  text-align: center;
+  width: 100%;
+}
+
+:host():not(.taken) .viewport,
+:host().taken .preview {
+  display: block;
+}

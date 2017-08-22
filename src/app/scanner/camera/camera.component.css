@@ -2,30 +2,6 @@
   display: block;
 }
 
-.viewport-container,
-.snapshot-container {
-  display: none;
-}
-
-.viewport-container.show,
-.snapshot-container.show {
-  display: block;
-}
-
-.viewport,
-.snapshot {
-  height: 350px;
-  overflow: hidden;
-  width: 100%;
-}
-
-.viewport video,
-.snapshot canvas {
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
-}
-
 .status-container {
   font-size: 18px;
   margin: 8px;
@@ -44,10 +20,17 @@
   width: 100%;
 }
 .action-container button {
+  display: none;
   appearance: none;
   background-color: transparent;
   border: 0;
   height: 60px;
+}
+
+.action-container:not(.taken) .capture,
+.action-container.taken .reset,
+.action-container.taken .upload {
+  display: inline-block;
 }
 
 .action-container button + button {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { CameraService } from '../../services/camera.service';
@@ -8,7 +8,7 @@ import { CameraService } from '../../services/camera.service';
   templateUrl: './camera.component.html',
   styleUrls: ['./camera.component.css']
 })
-export class CameraComponent implements OnInit, OnDestroy {
+export class CameraComponent implements OnInit {
   imageTaken = false;
   image: FirebaseObjectObservable<any>;
 
@@ -18,16 +18,7 @@ export class CameraComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // should show a reason to request first, then fire request.
-    this.camera.requestPermission()
-      .then(() => {
-        this.camera.setElements();
-        this.camera.startStream();
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.camera.stopStream();
+    // prep user for incoming permission request
   }
 
   capture(): void {

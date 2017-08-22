@@ -6,6 +6,7 @@ import { AngularFireModule } from 'angularfire2';
 import { CameraService } from '../services/camera.service';
 
 import { CameraComponent } from './camera/camera.component';
+import { LensComponent } from './lens/lens.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { CameraComponent } from './camera/camera.component';
     AngularFireModule,
   ],
   declarations: [
-    CameraComponent
+    CameraComponent,
+    LensComponent
   ],
   providers: [CameraService]
 })
