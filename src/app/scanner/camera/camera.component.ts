@@ -44,6 +44,6 @@ export class CameraComponent implements OnInit, OnDestroy {
 
   reset(): void {
     this.imageTaken = false;
-    this.camera.stopStream();
+    this.camera.startStream();
   }
 }
