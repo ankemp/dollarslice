@@ -12,6 +12,10 @@ exports.ocrProcessListener = functions.storage.object()
       return console.log('This is a deletion event.');
     }
 
+    if (!object.name.startsWith('images/')) {
+      return console.log('Not in the images/ folder');
+    }
+
     const gcsImageUri = `gs://${object.bucket}/${object.name}`;
     var image = { source: { gcsImageUri } };
     const db = firebaseAdmin.database();
