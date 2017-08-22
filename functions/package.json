@@ -5,7 +5,8 @@
     "@google-cloud/storage": "^1.2.1",
     "@google-cloud/vision": "^0.12.0",
     "firebase-admin": "~4.2.1",
-    "firebase-functions": "^0.5.7"
+    "firebase-functions": "^0.5.7",
+    "yelp-api-v3": "^1.5.0"
   },
   "private": true
 }

@@ -1498,3 +1498,9 @@ yargs@^3.10.0:
     string-width "^1.0.1"
     window-size "^0.1.4"
     y18n "^3.2.0"
+
+yelp-api-v3@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/yelp-api-v3/-/yelp-api-v3-1.5.0.tgz#fc2048ed6a628561ad62ec4cd79f15c724699464"
+  dependencies:
+    request "^2.74.0"

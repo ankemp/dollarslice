@@ -2,7 +2,13 @@ const functions = require('firebase-functions');
 const firebaseAdmin = require('firebase-admin');
 const gcs = require('@google-cloud/storage')();
 const vision = require('@google-cloud/vision')();
+const Yelp = require('yelp-api-v3');
 firebaseAdmin.initializeApp(functions.config().firebase)
+
+const yelpCreds = {
+  app_id: functions.config().yelp.app_id,
+  app_secret: functions.config().yelp.app
+};
 
 exports.ocrProcessListener = functions.storage.object()
   .onChange(event => {
@@ -74,3 +80,25 @@ function lookForSerial(data) {
     return Reject({ code: 204, message: 'error_no_text' });
   });
 }
+
+exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
+  .onCreate(event => {
+    const queryid = event.params.queryid;
+    const searchRef = event.data.ref;
+    const yelp = new Yelp(yelpCreds);
+
+    const params = {
+      query: 'pizza',
+      location: event.data.val().location
+    };
+    searchRef.update({ status: 'searching' });
+    yelp.search(params)
+      .then(data => {
+        console.log(data);
+        searchRef.update({ status: 'complete', results: data });
+      })
+      .catch(err => {
+        searchRef.update({ status: 'error' });
+        console.error(err);
+      })
+  });
