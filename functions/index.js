@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const firebaseAdmin = require('firebase-admin');
 const gcs = require('@google-cloud/storage')();
 const vision = require('@google-cloud/vision')();
-const Yelp = require('yelp-api-v3');
+const Yelp = require('yelp-api-v3'); // https://github.com/kristenlk/yelp-api-v3
 firebaseAdmin.initializeApp(functions.config().firebase)
 
 const yelpCreds = {
