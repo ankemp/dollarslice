@@ -1,11 +1,11 @@
-<app-camera-lens *ngIf="!(image | async)" [ngClass]="{'taken': imageTaken}"></app-camera-lens>
+<app-camera-lens *ngIf="!(image | async)" [ngClass]="{'taken': imageTaken | async}"></app-camera-lens>
 <div *ngIf="(image | async)" class="status-container">
   <i *ngIf="(image | async)?.status !== 'complete' && (image | async)?.status.indexOf('error') === -1" class="material-icons material-icons-spin">autorenew</i>
   <i *ngIf="(image | async)?.status === 'complete'" class="material-icons">done</i>
   <i *ngIf="(image | async)?.status.indexOf('error') >= 0" class="material-icons">error</i>
   <div class="status">{{ (image | async)?.status }}</div>
 </div>
-<div *ngIf="!(image | async)" [ngClass]="{'taken': imageTaken}" class="action-container">
+<div *ngIf="!(image | async)" [ngClass]="{'taken': imageTaken | async}" class="action-container">
   <button class="capture" (click)="capture()"><i class="material-icons">camera</i></button>
   <button class="reset" (click)="reset()"><i class="material-icons">undo</i></button>
   <button class="upload" (click)="upload()"><i class="material-icons">file_upload</i></button>

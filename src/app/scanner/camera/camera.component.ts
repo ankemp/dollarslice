@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
+import { Subject } from 'rxjs/Subject';
 
 import { CameraService } from '../../services/camera.service';
 
@@ -8,33 +9,31 @@ import { CameraService } from '../../services/camera.service';
   templateUrl: './camera.component.html',
   styleUrls: ['./camera.component.css']
 })
-export class CameraComponent implements OnInit {
-  imageTaken = false;
+export class CameraComponent {
+  imageTaken = new Subject<boolean>();
   image: FirebaseObjectObservable<any>;
 
   constructor(
     private db: AngularFireDatabase,
     public camera: CameraService,
-  ) { }
-
-  ngOnInit(): void {
-    // prep user for incoming permission request
+  ) {
+    this.imageTaken.next(false);
   }
 
   capture(): void {
     this.camera.capture();
-    this.imageTaken = true;
+    this.imageTaken.next(true);
   }
 
   upload(): void {
     this.camera.save()
-      .then(key => {
+      .then(({ key }) => {
         this.image = this.db.object(`images/${key}`);
       });
   }
 
   reset(): void {
-    this.imageTaken = false;
+    this.imageTaken.next(false);
     this.camera.startStream();
   }
 }
