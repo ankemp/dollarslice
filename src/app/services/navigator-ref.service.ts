@@ -7,7 +7,7 @@ function getNavigator(): any {
 @Injectable()
 export class NavigatorRefService {
 
-  get nativeNavigator(): any {
+  get nativeNavigator(): Navigator {
     return getNavigator();
   }
 

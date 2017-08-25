@@ -30,6 +30,17 @@ export class CameraService {
     return this._navigator.mediaDevices.getUserMedia(this.constraints);
   }
 
+  hasPermission(): Promise<boolean> {
+    return this._navigator.mediaDevices.enumerateDevices()
+      .then(devices => devices.filter(device => device.kind === 'videoinput' && device.label))
+      .then(videoDevices => {
+        if (videoDevices.length >= 1) {
+          return true;
+        }
+        return false;
+      });
+  }
+
   setElements(): void {
     this.player = <HTMLVideoElement>document.getElementById('viewport');
     this.snapshot = <HTMLCanvasElement>document.getElementById('snapshot');
@@ -70,25 +81,21 @@ export class CameraService {
     });
   }
 
-  save(): Promise<string> {
+  save(): Promise<firebase.database.DataSnapshot> {
     return new Promise(Resolve => {
       this.createDbEntry()
         .then(snapshot => {
-          Resolve(snapshot.key);
+          Resolve(snapshot);
           return Promise.resolve(snapshot);
         })
         .then((dbSnapshot: firebase.database.ThenableReference) => {
           this.toBlob()
             .then((blob: Blob) => {
-              return dbSnapshot.update({ status: 'uploading' })
-                .then(() => {
-                  return this.file.upload(dbSnapshot.key, blob, 'images');
-                });
+              dbSnapshot.update({ status: 'uploading' });
+              return this.file.upload(dbSnapshot.key, blob, 'images');
             })
             .then(fileSnapshot => fileSnapshot.ref.fullPath)
-            .then(path => {
-              return dbSnapshot.update({ status: 'ocr_queued', image: path });
-            });
+            .then(path => dbSnapshot.update({ status: 'ocr_queued', image: path }));
         });
     });
   }

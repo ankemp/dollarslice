@@ -13,14 +13,29 @@ export class LensComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.camera.requestPermission()
-      .then(() => {
-        this.camera.setElements();
-        this.camera.startStream();
+    this.camera.hasPermission()
+      .then(status => {
+        if (status) {
+          this.removeLenseCap();
+        } else {
+          console.log('show notification about needing permission.');
+          this.camera.requestPermission()
+            .then(() => {
+              this.removeLenseCap();
+            })
+            .catch(err => {
+              console.error('Permission Rejected?', err);
+            });
+        }
       });
   }
 
   ngOnDestroy(): void {
     this.camera.stopStream();
+  }
+
+  private removeLenseCap(): void {
+    this.camera.setElements();
+    this.camera.startStream();
   }
 }
