@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@agm/core@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@agm/core/-/core-1.0.0-beta.1.tgz#8ba7286e564bfaea8390dc5a8163a064100abc6b"
+
 "@angular-devkit/build-optimizer@0.0.13":
   version "0.0.13"
   resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.0.13.tgz#cf397af76abe899aa909d4a735106694ca1f08cf"
