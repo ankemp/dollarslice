@@ -41,6 +41,8 @@ exports.ocrProcessListener = functions.storage.object()
       .then(() => statusRef.set('complete'))
       .catch(err => {
         console.log(err);
+        // object.ref.delete();
+        // TODO: delete image if no serial is found.
         if (typeof err.code !== 'undefined' && err.code === 204) {
           return statusRef.set(err.message);
         }
