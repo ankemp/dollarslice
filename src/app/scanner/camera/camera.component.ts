@@ -11,7 +11,7 @@ import { CameraService } from '../../services/camera.service';
 })
 export class CameraComponent {
   imageTaken = new Subject<boolean>();
-  image: FirebaseObjectObservable<any>;
+  dollar: FirebaseObjectObservable<any>;
 
   constructor(
     private db: AngularFireDatabase,
@@ -28,7 +28,7 @@ export class CameraComponent {
   upload(): void {
     this.camera.save()
       .then(({ key }) => {
-        this.image = this.db.object(`images/${key}`);
+        this.dollar = this.db.object(`images/${key}`);
       });
   }
 
