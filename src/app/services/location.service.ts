@@ -17,7 +17,7 @@ export class LocationService {
     }
   }
 
-  getLocation(): Promise<Coordinates | PositionError> {
+  private getQuick(): Promise<Coordinates | PositionError> {
     return new Promise((Resolve, Reject) => {
       this._navigator.geolocation
         .getCurrentPosition(position => {
@@ -26,6 +26,28 @@ export class LocationService {
           return Reject(err);
         });
     });
+  }
+
+  private getAccurate(): Promise<Coordinates | PositionError> {
+    const options = <PositionOptions>{
+      enableHighAccuracy: true,
+    };
+    return new Promise((Resolve, Reject) => {
+      this._navigator.geolocation
+        .getCurrentPosition(position => {
+          return Resolve(position.coords);
+        }, err => {
+          return Reject(err);
+        }, options);
+    });
+  }
+
+  getLocation(highAccuracy = false): Promise<Coordinates | PositionError> {
+    if (highAccuracy) {
+      return this.getAccurate();
+    } else {
+      return this.getQuick();
+    }
   }
 
 }
