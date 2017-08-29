@@ -1,3 +1,5 @@
-<p>
-  place-search works!
-</p>
+<div>
+  <button *ngIf="!(coords | async)" class="pure-button pure-button-primary" (click)="findMe()">Find Me</button>
+  <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="findMe(true)">Increase Accuracy</button>
+  <div *ngIf="(coords | async)">{{(coords | async)?.latitude}}, {{(coords | async)?.longitude}}</div>
+</div>
