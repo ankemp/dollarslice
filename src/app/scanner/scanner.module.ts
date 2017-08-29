@@ -6,6 +6,7 @@ import { AgmCoreModule } from '@agm/core';
 import { environment } from '../../environments/environment';
 
 import { CameraService } from '../services/camera.service';
+import { LocationService } from '../services/location.service';
 
 import { CameraComponent } from './camera/camera.component';
 import { PlaceSearchComponent } from './place-search/place-search.component';
@@ -23,6 +24,9 @@ import { LensComponent } from './lens/lens.component';
     PlaceSearchComponent,
     LensComponent
   ],
-  providers: [CameraService]
+  providers: [
+    CameraService,
+    LocationService
+  ]
 })
 export class ScannerModule { }
