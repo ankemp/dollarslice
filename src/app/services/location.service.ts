@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 import { NavigatorRefService } from './navigator-ref.service';
 
@@ -7,6 +8,7 @@ export class LocationService {
   private _navigator: Navigator;
 
   constructor(
+    public db: AngularFireDatabase,
     private navigatorService: NavigatorRefService,
   ) {
     this._navigator = navigatorService.nativeNavigator;
@@ -48,6 +50,19 @@ export class LocationService {
     } else {
       return this.getQuick();
     }
+  }
+
+  findLocations(coords: Coordinates): Promise<firebase.database.DataSnapshot> {
+    return new Promise((Resolve, Reject) => {
+      this.db.list('/yelp-search')
+        .push({
+          status: 'query',
+          latitude: coords.latitude,
+          longitude: coords.longitude
+        })
+        .then(Resolve);
+    });
+
   }
 
 }
