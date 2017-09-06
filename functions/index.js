@@ -90,14 +90,17 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
     const yelp = new Yelp(yelpCreds);
 
     const params = {
-      query: 'pizza',
-      location: event.data.val().location
+      term: 'pizza',
+      price: '1,2',
+      limit: 5,
+      latitude: event.data.val().latitude,
+      longitude: event.data.val().longitude
     };
     searchRef.update({ status: 'searching' });
     yelp.search(params)
       .then(data => {
-        console.log(data);
-        searchRef.update({ status: 'complete', results: data });
+        const results = JSON.parse(data);
+        searchRef.update({ status: 'complete', results });
       })
       .catch(err => {
         searchRef.update({ status: 'error' });
