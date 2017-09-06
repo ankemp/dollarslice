@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
-import { Subject } from 'rxjs/Subject';
+import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { LocationService } from '../../services/location.service';
 
@@ -11,19 +11,15 @@ import { LocationService } from '../../services/location.service';
 })
 export class PlaceSearchComponent implements OnInit {
   @Input() dollar: FirebaseObjectObservable<any>;
-  public yelpSearch: FirebaseListObservable<any>;
-  public coords = new Subject<Coordinates>();
+  public yelpSearch: FirebaseObjectObservable<any>;
+  public coords = new BehaviorSubject<Coordinates>(null);
 
   constructor(
     public db: AngularFireDatabase,
     public location: LocationService
   ) { }
 
-  ngOnInit() {
-    this.coords.subscribe(coords => {
-      console.log('Coords: ', coords);
-    });
-  }
+  ngOnInit() { }
 
   findMe(highAccuracy = false): void {
     this.location.getLocation(highAccuracy)
@@ -36,8 +32,11 @@ export class PlaceSearchComponent implements OnInit {
   }
 
   searchYelp(): void {
-    this.db.list('/yelp-search')
-      .push({ status: 'query', location: '' });
+    const coords = this.coords.getValue();
+    this.location.findLocations(coords)
+      .then(({ key }) => {
+        this.yelpSearch = this.db.object(`/yelp-search/${key}`);
+      });
   }
 
 }
