@@ -7,6 +7,7 @@
     "firebase-admin": "^5.2.1",
     "firebase-functions": "^0.6.3",
     "lodash": "^4.17.4",
+    "mathjs": "^3.16.3",
     "yelp-api-v3": "^1.5.0"
   },
   "private": true

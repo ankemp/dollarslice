@@ -4,6 +4,7 @@ const gcs = require('@google-cloud/storage')();
 const vision = require('@google-cloud/vision')();
 const Yelp = require('yelp-api-v3'); // https://github.com/kristenlk/yelp-api-v3
 const _ = require('lodash');
+const math = require('mathjs');
 firebaseAdmin.initializeApp(functions.config().firebase)
 
 const yelpCreds = {
@@ -19,7 +20,7 @@ exports.ocrProcessListener = functions.storage.object()
       return console.log('This is a deletion event.');
     }
 
-    if (!object.name.startsWith('images/')) {
+    if (!_.startsWith(object.name, 'images/')) {
       return console.log('Not in the images/ folder');
     }
 
@@ -53,15 +54,14 @@ exports.ocrProcessListener = functions.storage.object()
 
 function lookForSerial(data) {
   return new Promise((Resolve, Reject) => {
-    if (Array.isArray(data)) {
+    if (_.isArray(data)) {
       let text = data[0].textAnnotations;
-      console.log(text);
-      if (typeof text !== 'undefined' && Array.isArray(text) && text.length !== 0) {
+      if (!_.isUndefined(text) && _.isArray(text) && text.length !== 0) {
         text = text[0].description;
       }
-      const textItems = text.split('\n');
+      const textItems = _.split(text, '\n');
       if (textItems.length) {
-        let matched = textItems.filter(text => {
+        let matched = _.filter(textItems, text => {
           /**
            * Look for serial in textItems
            * Can match:
@@ -72,9 +72,9 @@ function lookForSerial(data) {
         });
         if (matched.length) {
           // Take last item
-          matched = matched.pop();
+          matched = _.last(matched);
           // Standardize serial numbers (no whitespace)
-          matched = matched.replace(' ', '');
+          matched = _.replace(matched, /\s/g, '')
           return Resolve(matched);
         }
         return Reject({ code: 204, message: 'error_no_serial' });
@@ -86,7 +86,7 @@ function lookForSerial(data) {
 
 exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
   .onCreate(event => {
-    const queryid = event.params.queryid;
+    const { queryid } = event.params;
     const searchRef = event.data.ref;
     const yelp = new Yelp(yelpCreds);
 
@@ -103,7 +103,15 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
         searchRef.update({ status: 'parsing' });
         let results = JSON.parse(data);
         results = results.businesses;
-        results = _.map(results, business => _.omit(business, ['transactions', 'categories', 'review_count', 'url']));
+        results = _.map(results, business => {
+          business = _.omit(business, ['transactions', 'categories', 'review_count', 'url']);
+          let distance = math.unit(business.distance, 'meter').toNumber('feet');
+          if (parseInt(distance) >= 1320) {
+            distance = math.unit(distance, 'feet').toNumber('mile');
+          }
+          business.distance = distance;
+          return business;
+        });
         searchRef.update({ status: 'complete', results });
       })
       .catch(err => {
