@@ -1,7 +1,7 @@
 <button *ngIf="!(coords | async)" class="pure-button pure-button-primary find-me" (click)="findMe()"><i class="material-icons">my_location</i> Find Me</button>
 <div *ngIf="(coords | async) && !(yelpSearch | async)" class="map-container">
   <agm-map [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude" [mapDraggable]="false" [streetViewControl]="false"
-    [zoomControl]="false" [panControl]="false" [gestureHandling]="false" [maxZoom]="18" [minZoom]="18" [zoom]="18">
+    [zoomControl]="false" [panControl]="false" [gestureHandling]="false" [maxZoom]="17" [minZoom]="17" [zoom]="17">
     <agm-marker [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude"></agm-marker>
   </agm-map>
   <div class="map-actions">
