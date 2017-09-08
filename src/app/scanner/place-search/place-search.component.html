@@ -5,8 +5,8 @@
     <agm-marker [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude"></agm-marker>
   </agm-map>
   <div class="map-actions">
-    <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
     <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="findMe(true)">Increase Accuracy</button>
+    <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
   </div>
 </div>
 <p *ngIf="(yelpSearch | async)">{{ (yelpSearch | async)?.status }}</p>
