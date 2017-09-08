@@ -106,8 +106,10 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
         results = _.map(results, business => {
           business = _.omit(business, ['transactions', 'categories', 'review_count', 'url']);
           let distance = math.unit(business.distance, 'meter').toNumber('feet');
+          business.distance_unit = 'feet';
           if (parseInt(distance) >= 1320) {
             distance = math.unit(distance, 'feet').toNumber('mile');
+            business.distance_unit = 'mile';
           }
           business.distance = distance;
           return business;
