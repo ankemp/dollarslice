@@ -3,6 +3,7 @@ const firebaseAdmin = require('firebase-admin');
 const gcs = require('@google-cloud/storage')();
 const vision = require('@google-cloud/vision')();
 const Yelp = require('yelp-api-v3'); // https://github.com/kristenlk/yelp-api-v3
+const _ = require('lodash');
 firebaseAdmin.initializeApp(functions.config().firebase)
 
 const yelpCreds = {
@@ -99,7 +100,10 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
     searchRef.update({ status: 'searching' });
     yelp.search(params)
       .then(data => {
-        const results = JSON.parse(data);
+        searchRef.update({ status: 'parsing' });
+        let results = JSON.parse(data);
+        results = results.businesses;
+        results = _.map(results, business => _.omit(business, ['transactions', 'categories', 'review_count', 'url']));
         searchRef.update({ status: 'complete', results });
       })
       .catch(err => {

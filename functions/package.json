@@ -6,6 +6,7 @@
     "@google-cloud/vision": "^0.12.0",
     "firebase-admin": "^5.2.1",
     "firebase-functions": "^0.6.3",
+    "lodash": "^4.17.4",
     "yelp-api-v3": "^1.5.0"
   },
   "private": true
