@@ -1,11 +1,12 @@
-<div>
-  <button *ngIf="!(coords | async)" class="pure-button pure-button-primary" (click)="findMe()">Find Me</button>
-  <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="findMe(true)">Increase Accuracy</button>
-  <div *ngIf="(coords | async)">{{(coords | async)?.latitude}}, {{(coords | async)?.longitude}}</div>
-  <agm-map *ngIf="(coords | async)" [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude" [mapDraggable]="false"
-    [streetViewControl]="false" [zoomControl]="false" [panControl]="false" [gestureHandling]="false" [maxZoom]="18" [minZoom]="18"
-    [zoom]="18">
+<button *ngIf="!(coords | async)" class="pure-button pure-button-primary find-me" (click)="findMe()"><i class="material-icons">my_location</i> Find Me</button>
+<div *ngIf="(coords | async) && !(yelpSearch | async)" class="map-container">
+  <agm-map [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude" [mapDraggable]="false" [streetViewControl]="false"
+    [zoomControl]="false" [panControl]="false" [gestureHandling]="false" [maxZoom]="18" [minZoom]="18" [zoom]="18">
     <agm-marker [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude"></agm-marker>
   </agm-map>
-  <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
+  <div class="map-actions">
+    <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
+    <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="findMe(true)">Increase Accuracy</button>
+  </div>
 </div>
+<p *ngIf="(yelpSearch | async)">{{ (yelpSearch | async)?.status }}</p>
