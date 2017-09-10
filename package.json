@@ -30,6 +30,7 @@
     "angularfire2": "4.0.0-rc.2",
     "core-js": "^2.4.1",
     "firebase": "^4.3.0",
+    "ngx-pipes": "^1.6.5",
     "purecss": "^1.0.0",
     "rxjs": "^5.4.2",
     "tesseract.js": "^1.0.10",
