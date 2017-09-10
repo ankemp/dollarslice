@@ -10,7 +10,7 @@
       <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
     </div>
   </div>
-  <app-status [object]="yelpSearch"></app-status>
+  <app-status *ngIf="(yelpSearch | async)" [object]="yelpSearch"></app-status>
   <div *ngIf="(yelpSearch | async)" class="search-container">
     <div *ngFor="let place of (yelpSearch | async)?.results" id="{{ place.id }}" class="place">
       <img class="thumb" src="{{ place.image_url }}" alt="{{ place.name }}">

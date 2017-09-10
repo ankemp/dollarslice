@@ -1,6 +1,6 @@
-<div *ngIf="(object | async) && (object | async)?.status" class="status-container">
+<div *ngIf="(object | async) && (object | async)?.status && !isComplete" class="status-container">
   <i *ngIf="(object | async)?.status !== 'complete' && (object | async)?.status.indexOf('error') === -1" class="material-icons material-icons-spin">autorenew</i>
-  <i *ngIf="(object | async)?.status === 'complete'" class="material-icons">done</i>
   <i *ngIf="(object | async)?.status.indexOf('error') >= 0" class="material-icons">error</i>
+  <i *ngIf="(object | async)?.status === 'complete'" class="material-icons">done</i>
   <div class="status">{{ (object | async)?.status }}</div>
 </div>
