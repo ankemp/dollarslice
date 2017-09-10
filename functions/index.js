@@ -94,6 +94,8 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
       term: 'pizza',
       price: '1,2',
       limit: 5,
+      open_now: true,
+      sort_by: 'distance',
       latitude: event.data.val().latitude,
       longitude: event.data.val().longitude
     };
