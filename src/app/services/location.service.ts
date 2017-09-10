@@ -63,7 +63,16 @@ export class LocationService {
         })
         .then(Resolve);
     });
+  }
 
+  saveLocation(place): Promise<void> {
+    return new Promise((Resolve, Reject) => {
+      const { distance, distance_unit, is_closed, id, ...data } = place;
+      this.db.object(`/location/${id}`)
+        .set({ ...data })
+        .then(Resolve)
+        .catch(Reject);
+    });
   }
 
 }
