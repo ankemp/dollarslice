@@ -1,4 +1,4 @@
-:host() {
+.app-container {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -25,4 +25,35 @@ agm-map {
 
 .map-actions .pure-button {
   font-size: 75%;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-container .place {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+
+.search-container .place .thumb {
+  height: 75px;
+  margin-right: 8px;
+  object-fit: cover;
+  width: 75px;
+}
+
+.search-container .place .distance {
+  font-size: 12px;
+}
+
+.search-container .place .choose-location {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  margin-left: auto;
 }

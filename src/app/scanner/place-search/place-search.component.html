@@ -1,12 +1,24 @@
-<button *ngIf="!(coords | async)" class="pure-button pure-button-primary find-me" (click)="findMe()"><i class="material-icons">my_location</i> Find Me</button>
-<div *ngIf="(coords | async) && !(yelpSearch | async)" class="map-container">
-  <agm-map [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude" [mapDraggable]="false" [streetViewControl]="false"
-    [zoomControl]="false" [panControl]="false" [gestureHandling]="false" [maxZoom]="17" [minZoom]="17" [zoom]="17">
-    <agm-marker [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude"></agm-marker>
-  </agm-map>
-  <div class="map-actions">
-    <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="findMe(true)">Increase Accuracy</button>
-    <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
+<div class="app-container">
+  <button *ngIf="!(coords | async) && !(yelpSearch | async)" class="pure-button pure-button-primary find-me" (click)="findMe()"><i class="material-icons">my_location</i> Find Me</button>
+  <div *ngIf="(coords | async) && !(yelpSearch | async)" class="map-container">
+    <agm-map [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude" [mapDraggable]="false" [streetViewControl]="false"
+      [zoomControl]="false" [panControl]="false" [gestureHandling]="false" [maxZoom]="17" [minZoom]="17" [zoom]="17">
+      <agm-marker [latitude]="(coords | async)?.latitude" [longitude]="(coords | async)?.longitude"></agm-marker>
+    </agm-map>
+    <div class="map-actions">
+      <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="findMe(true)">Increase Accuracy</button>
+      <button *ngIf="(coords | async)" class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
+    </div>
+  </div>
+  <p *ngIf="(yelpSearch | async) && (yelpSearch | async)?.status !== 'complete'">{{ (yelpSearch | async)?.status }}</p>
+  <div *ngIf="(yelpSearch | async)" class="search-container">
+    <div *ngFor="let place of (yelpSearch | async)?.results" id="{{ place.id }}" class="place">
+      <img class="thumb" src="{{ place.image_url }}" alt="{{ place.name }}">
+      <div class="content">
+        <div class="name">{{ place.name }}</div>
+        <div class="distance">{{ place.distance | round: 2 }} {{ place.distance_unit }} away</div>
+      </div>
+      <button class="choose-location" (click)="chooseLocation(place)"><i class="material-icons">add_location</i></button>
+    </div>
   </div>
 </div>
-<p *ngIf="(yelpSearch | async)">{{ (yelpSearch | async)?.status }}</p>

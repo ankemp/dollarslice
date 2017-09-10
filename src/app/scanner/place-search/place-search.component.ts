@@ -39,4 +39,8 @@ export class PlaceSearchComponent implements OnInit {
       });
   }
 
+  chooseLocation(place): void {
+    console.log(place);
+  }
+
 }
