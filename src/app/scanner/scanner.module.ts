@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 import { CameraService } from '../services/camera.service';
 import { LocationService } from '../services/location.service';
 
+import { NgMathPipesModule } from 'ngx-pipes';
+
 import { CameraComponent } from './camera/camera.component';
 import { PlaceSearchComponent } from './place-search/place-search.component';
 import { LensComponent } from './lens/lens.component';
@@ -18,6 +20,7 @@ import { LensComponent } from './lens/lens.component';
     AppRoutingModule,
     AngularFireModule,
     AgmCoreModule.forRoot({ apiKey: environment.googleMaps }),
+    NgMathPipesModule
   ],
   declarations: [
     CameraComponent,
