@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
+import { FirebaseObjectObservable } from 'angularfire2/database';
 import { Subject } from 'rxjs/Subject';
 
 import { CameraService } from '../../services/camera.service';
+import { SerialService } from '../../services/serial.service';
 
 @Component({
   selector: 'app-camera',
@@ -11,11 +12,10 @@ import { CameraService } from '../../services/camera.service';
 })
 export class CameraComponent {
   imageTaken = new Subject<boolean>();
-  dollar: FirebaseObjectObservable<any>;
 
   constructor(
-    private db: AngularFireDatabase,
-    public camera: CameraService,
+    private camera: CameraService,
+    public serial: SerialService
   ) {
     this.imageTaken.next(false);
   }
@@ -27,8 +27,14 @@ export class CameraComponent {
 
   upload(): void {
     this.camera.save()
-      .then(({ key }) => {
-        this.dollar = this.db.object(`serial/${key}`);
+      .then(_ => {
+        this.serial.active.subscribe(dollar => {
+          if (dollar.status === 'complete') {
+            setTimeout(() => {
+              // send to checkin phase
+            }, 1000);
+          }
+        });
       });
   }
 

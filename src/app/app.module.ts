@@ -17,6 +17,7 @@ import { NavigatorRefService } from './services/navigator-ref.service';
 import { WindowRefService } from './services/window-ref.service';
 import { UserService } from './services/user.service';
 import { FileStorageService } from './services/file-storage.service';
+import { SerialService } from './services/serial.service';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { FileStorageService } from './services/file-storage.service';
     WindowRefService,
     UserService,
     FileStorageService,
+    SerialService,
     AuthGuard,
   ],
   bootstrap: [AppComponent]

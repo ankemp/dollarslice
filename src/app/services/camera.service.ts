@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { FileStorageService } from './file-storage.service';
+import { SerialService } from './serial.service';
 import { NavigatorRefService } from './navigator-ref.service';
 
 @Injectable()
@@ -16,6 +17,7 @@ export class CameraService {
   constructor(
     public db: AngularFireDatabase,
     public file: FileStorageService,
+    private serial: SerialService,
     private navigatorService: NavigatorRefService,
   ) {
     this._navigator = navigatorService.nativeNavigator;
@@ -66,13 +68,6 @@ export class CameraService {
     this.stopStream();
   }
 
-  private createDbEntry(): firebase.database.ThenableReference {
-    const d = new Date();
-    const n = d.getTime();
-    const list = this.db.list('/serial');
-    return list.push({ user: 'test', status: 'new', timestamp: n, rTimestamp: 0 - n });
-  }
-
   private toBlob(): Promise<Blob> {
     return new Promise(Resolve => {
       this.snapshot.toBlob(blob => {
@@ -83,7 +78,7 @@ export class CameraService {
 
   save(): Promise<firebase.database.DataSnapshot> {
     return new Promise(Resolve => {
-      this.createDbEntry()
+      this.serial.create()
         .then(snapshot => {
           Resolve(snapshot);
           return Promise.resolve(snapshot);
