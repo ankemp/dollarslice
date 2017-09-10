@@ -58,7 +58,8 @@ export class LocationService {
         .push({
           status: 'query',
           latitude: coords.latitude,
-          longitude: coords.longitude
+          longitude: coords.longitude,
+          created: firebase.database.ServerValue.TIMESTAMP
         })
         .then(Resolve);
     });
