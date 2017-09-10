@@ -1,11 +1,5 @@
 <app-camera-lens *ngIf="!(dollar | async)" [ngClass]="{'taken': imageTaken | async}"></app-camera-lens>
-<app-place-search *ngIf="(dollar | async)" [dollar]="dollar"></app-place-search>
-<div *ngIf="(dollar | async)" class="status-container">
-  <i *ngIf="(dollar | async)?.status !== 'complete' && (dollar | async)?.status.indexOf('error') === -1" class="material-icons material-icons-spin">autorenew</i>
-  <i *ngIf="(dollar | async)?.status === 'complete'" class="material-icons">done</i>
-  <i *ngIf="(dollar | async)?.status.indexOf('error') >= 0" class="material-icons">error</i>
-  <div class="status">{{ (dollar | async)?.status }}</div>
-</div>
+<app-status [object]="dollar"></app-status>
 <div *ngIf="!(dollar | async)" [ngClass]="{'taken': imageTaken | async}" class="action-container">
   <button class="capture" (click)="capture()"><i class="material-icons">camera</i></button>
   <button class="reset" (click)="reset()"><i class="material-icons">undo</i></button>

@@ -2,16 +2,6 @@
   display: block;
 }
 
-.status-container {
-  font-size: 18px;
-  margin: 8px;
-  text-align: center;
-}
-
-.status-container .material-icons {
-  font-size: 48px;
-}
-
 .action-container {
   bottom: 20px;
   display: flex;
