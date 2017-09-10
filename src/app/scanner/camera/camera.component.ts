@@ -28,7 +28,7 @@ export class CameraComponent {
   upload(): void {
     this.camera.save()
       .then(({ key }) => {
-        this.dollar = this.db.object(`images/${key}`);
+        this.dollar = this.db.object(`serial/${key}`);
       });
   }
 

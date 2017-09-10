@@ -10,7 +10,7 @@ import { LocationService } from '../../services/location.service';
   styleUrls: ['./place-search.component.css']
 })
 export class PlaceSearchComponent implements OnInit {
-  @Input() dollar: FirebaseObjectObservable<any>;
+  @Input() serialKey: string;
   public yelpSearch: FirebaseObjectObservable<any>;
   public coords = new BehaviorSubject<Coordinates>(null);
 
@@ -35,7 +35,7 @@ export class PlaceSearchComponent implements OnInit {
     const coords = this.coords.getValue();
     this.location.findLocations(coords)
       .then(({ key }) => {
-        this.yelpSearch = this.db.object(`/yelp-search/${key}`);
+        this.yelpSearch = this.db.object(`yelp-search/${key}`);
       });
   }
 

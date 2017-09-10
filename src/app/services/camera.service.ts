@@ -69,7 +69,7 @@ export class CameraService {
   private createDbEntry(): firebase.database.ThenableReference {
     const d = new Date();
     const n = d.getTime();
-    const list = this.db.list('/images');
+    const list = this.db.list('/serial');
     return list.push({ user: 'test', status: 'new', timestamp: n, rTimestamp: 0 - n });
   }
 
@@ -92,7 +92,7 @@ export class CameraService {
           this.toBlob()
             .then((blob: Blob) => {
               dbSnapshot.update({ status: 'uploading' });
-              return this.file.upload(dbSnapshot.key, blob, 'images');
+              return this.file.upload(dbSnapshot.key, blob, 'serial');
             })
             .then(fileSnapshot => fileSnapshot.ref.fullPath)
             .then(path => dbSnapshot.update({ status: 'ocr_queued', image: path }));

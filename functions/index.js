@@ -20,8 +20,8 @@ exports.ocrProcessListener = functions.storage.object()
       return console.log('This is a deletion event.');
     }
 
-    if (!_.startsWith(object.name, 'images/')) {
-      return console.log('Not in the images/ folder');
+    if (!_.startsWith(object.name, 'serial/')) {
+      return console.log('Not in the serial/ folder');
     }
 
     const gcsImageUri = `gs://${object.bucket}/${object.name}`;
