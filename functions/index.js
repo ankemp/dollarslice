@@ -103,7 +103,6 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
     yelp.search(params)
       .then(data => {
         searchRef.update({ status: 'parsing' });
-        console.time('Parse Time');
         let results = JSON.parse(data);
         results = results.businesses;
         results = _.map(results, business => {
@@ -115,7 +114,6 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
             business.distance_unit = 'mi';
           }
           business.distance = distance;
-          console.timeEnd('Parse Time');
           return business;
         });
         searchRef.update({ status: 'complete', results });
