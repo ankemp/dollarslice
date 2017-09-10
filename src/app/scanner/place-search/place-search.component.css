@@ -41,6 +41,7 @@ agm-map {
 }
 
 .search-container .place .thumb {
+  border-radius: 50%;
   height: 75px;
   margin-right: 8px;
   object-fit: cover;

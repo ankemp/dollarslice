@@ -40,7 +40,10 @@ export class PlaceSearchComponent implements OnInit {
   }
 
   chooseLocation(place): void {
-    console.log(place);
+    this.location.saveLocation(place)
+      .then(() => {
+        // create checkin entry
+      });
   }
 
 }
