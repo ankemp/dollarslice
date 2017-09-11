@@ -13,6 +13,7 @@ import { SerialService } from '../../services/serial.service';
 })
 export class PlaceSearchComponent implements OnInit {
   public coords = new BehaviorSubject<Coordinates>(null);
+  public locating = new BehaviorSubject<boolean>(false);
 
   constructor(
     private route: ActivatedRoute,
@@ -31,12 +32,15 @@ export class PlaceSearchComponent implements OnInit {
   }
 
   findMe(highAccuracy = false): void {
+    this.locating.next(true);
     this.location.getLocation(highAccuracy)
       .then((coords: Coordinates) => {
         this.coords.next(coords);
+        this.locating.next(false);
       })
       .catch((err: PositionError) => {
         console.error(err);
+        this.locating.next(false);
       });
   }
 

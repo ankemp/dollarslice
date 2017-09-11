@@ -6,7 +6,7 @@
   min-height: 300px;
 }
 
-.find-me {
+.pure-button.find-me  {
   font-size: 125%;
 }
 
@@ -23,7 +23,8 @@ agm-map {
   text-align: center;
 }
 
-.map-actions .pure-button {
+.map-actions .pure-button,
+.map-actions .pure-button i {
   font-size: 75%;
 }
 
