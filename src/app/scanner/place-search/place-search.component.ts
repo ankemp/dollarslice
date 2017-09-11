@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { LocationService } from '../../services/location.service';
+import { SerialService } from '../../services/serial.service';
 
 @Component({
   selector: 'app-place-search',
@@ -10,16 +12,24 @@ import { LocationService } from '../../services/location.service';
   styleUrls: ['./place-search.component.css']
 })
 export class PlaceSearchComponent implements OnInit {
-  @Input() serialKey: string;
   public yelpSearch: FirebaseObjectObservable<any>;
   public coords = new BehaviorSubject<Coordinates>(null);
 
   constructor(
-    public db: AngularFireDatabase,
-    public location: LocationService
+    private route: ActivatedRoute,
+    private db: AngularFireDatabase,
+    private location: LocationService,
+    private serial: SerialService
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    if (!this.serial.active) {
+      this.route.paramMap.subscribe((params: ParamMap) => {
+        const key = params.get('serialKey');
+        this.serial.lookup(key);
+      });
+    }
+  }
 
   findMe(highAccuracy = false): void {
     this.location.getLocation(highAccuracy)
