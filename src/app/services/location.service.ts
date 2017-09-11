@@ -65,12 +65,12 @@ export class LocationService {
     });
   }
 
-  saveLocation(place): Promise<void> {
+  saveLocation(location): Promise<string | Error> {
     return new Promise((Resolve, Reject) => {
-      const { distance, distance_unit, is_closed, id, ...data } = place;
+      const { distance, distance_unit, is_closed, id, ...data } = location;
       this.db.object(`/location/${id}`)
         .set({ ...data })
-        .then(Resolve)
+        .then(_ => Resolve(id))
         .catch(Reject);
     });
   }

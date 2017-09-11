@@ -39,9 +39,9 @@ export class PlaceSearchComponent implements OnInit {
       });
   }
 
-  chooseLocation(place): void {
-    this.location.saveLocation(place)
-      .then(() => {
+  chooseLocation(location): void {
+    this.location.saveLocation(location)
+      .then(locationKey => {
         // create checkin entry
       });
   }
