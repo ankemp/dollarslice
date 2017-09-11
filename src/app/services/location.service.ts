@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import * as firebase from 'firebase/app';
 
 import { NavigatorRefService } from './navigator-ref.service';
 
