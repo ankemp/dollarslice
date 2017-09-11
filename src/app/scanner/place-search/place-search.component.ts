@@ -42,12 +42,13 @@ export class PlaceSearchComponent implements OnInit {
 
   searchYelp(): void {
     const coords = this.coords.getValue();
-    this.location.find(coords);
+    this.location.searchYelp(coords);
   }
 
   chooseLocation(location): void {
-    this.location.save(location)
+    this.location.create(location)
       .then(locationKey => {
+        console.log(locationKey);
         // create checkin entry
       });
   }

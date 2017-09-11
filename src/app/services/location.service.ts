@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 
 import { NavigatorRefService } from './navigator-ref.service';
 
@@ -53,8 +53,12 @@ export class LocationService {
     }
   }
 
-  create({ longitude, latitude }): firebase.database.ThenableReference {
-    return this.db.list('/yelp-search')
+  private yelpList(): FirebaseListObservable<any[]> {
+    return this.db.list('/yelp-search');
+  }
+
+  private createSearch({ longitude, latitude }): firebase.database.ThenableReference {
+    return this.yelpList()
       .push({
         status: 'query',
         latitude,
@@ -67,21 +71,27 @@ export class LocationService {
 
   }
 
-  find(coords: Coordinates): firebase.database.ThenableReference {
-    const thenable = this.create(coords);
+  searchYelp(coords: Coordinates): firebase.database.ThenableReference {
+    const thenable = this.createSearch(coords);
     thenable.then(({ key }) => {
       this.lookup(key);
     });
     return thenable;
   }
 
-  save(location): Promise<string | Error> {
+  create(location): Promise<string | Error> {
     return new Promise((Resolve, Reject) => {
       const { distance, distance_unit, is_closed, id, ...data } = location;
       this.db.object(`/location/${id}`)
         .set({ ...data })
         .then(_ => Resolve(id))
         .catch(Reject);
+    });
+  }
+
+  checkin(serialKey: string, locationKey: string): Promise<void | Error> {
+    return new Promise((Resolve, Reject) => {
+
     });
   }
 
