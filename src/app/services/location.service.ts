@@ -54,10 +54,10 @@ export class LocationService {
   }
 
   private yelpList(): FirebaseListObservable<any[]> {
-    return this.db.list('/yelp-search');
+    return this.db.list('yelp-search');
   }
 
-  private createSearch({ longitude, latitude }): firebase.database.ThenableReference {
+  private createSearch({ longitude, latitude }: { longitude: number, latitude: number }): firebase.database.ThenableReference {
     return this.yelpList()
       .push({
         status: 'query',
@@ -67,22 +67,22 @@ export class LocationService {
       });
   }
 
-  lookup(key: string): void {
-
+  lookupYelp(key: string): void {
+    this.active = this.db.object(`yelp-search/${key}`);
   }
 
   searchYelp(coords: Coordinates): firebase.database.ThenableReference {
     const thenable = this.createSearch(coords);
     thenable.then(({ key }) => {
-      this.lookup(key);
+      this.lookupYelp(key);
     });
     return thenable;
   }
 
-  create(location): Promise<string | Error> {
+  create(location: any): Promise<string | Error> {
     return new Promise((Resolve, Reject) => {
       const { distance, distance_unit, is_closed, id, ...data } = location;
-      this.db.object(`/location/${id}`)
+      this.db.object(`location/${id}`)
         .set({ ...data })
         .then(_ => Resolve(id))
         .catch(Reject);
