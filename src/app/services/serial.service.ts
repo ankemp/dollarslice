@@ -16,7 +16,7 @@ export class SerialService {
   create(): firebase.database.ThenableReference {
     const d = new Date();
     const n = d.getTime();
-    const thenable = this.serialList().push({ user: 'test', status: 'new', timestamp: n, rTimestamp: 0 - n });
+    const thenable = this.serialList().push({ status: 'new', timestamp: n, rTimestamp: 0 - n });
     thenable.then(({ key }) => {
       this.lookup(key);
     });
