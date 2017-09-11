@@ -12,13 +12,12 @@ import { SerialService } from '../../services/serial.service';
   styleUrls: ['./place-search.component.css']
 })
 export class PlaceSearchComponent implements OnInit {
-  public yelpSearch: FirebaseObjectObservable<any>;
   public coords = new BehaviorSubject<Coordinates>(null);
 
   constructor(
     private route: ActivatedRoute,
     private db: AngularFireDatabase,
-    private location: LocationService,
+    public location: LocationService,
     private serial: SerialService
   ) { }
 
@@ -43,14 +42,11 @@ export class PlaceSearchComponent implements OnInit {
 
   searchYelp(): void {
     const coords = this.coords.getValue();
-    this.location.findLocations(coords)
-      .then(({ key }) => {
-        this.yelpSearch = this.db.object(`yelp-search/${key}`);
-      });
+    this.location.find(coords);
   }
 
   chooseLocation(location): void {
-    this.location.saveLocation(location)
+    this.location.save(location)
       .then(locationKey => {
         // create checkin entry
       });

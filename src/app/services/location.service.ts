@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { NavigatorRefService } from './navigator-ref.service';
 
 @Injectable()
 export class LocationService {
   private _navigator: Navigator;
+  public active: FirebaseObjectObservable<any>;
 
   constructor(
     public db: AngularFireDatabase,
@@ -52,20 +53,29 @@ export class LocationService {
     }
   }
 
-  findLocations(coords: Coordinates): Promise<firebase.database.DataSnapshot> {
-    return new Promise((Resolve, Reject) => {
-      this.db.list('/yelp-search')
-        .push({
-          status: 'query',
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          created: firebase.database.ServerValue.TIMESTAMP
-        })
-        .then(Resolve);
-    });
+  create({ longitude, latitude }): firebase.database.ThenableReference {
+    return this.db.list('/yelp-search')
+      .push({
+        status: 'query',
+        latitude,
+        longitude,
+        created: firebase.database.ServerValue.TIMESTAMP
+      });
   }
 
-  saveLocation(location): Promise<string | Error> {
+  lookup(key: string): void {
+
+  }
+
+  find(coords: Coordinates): firebase.database.ThenableReference {
+    const thenable = this.create(coords);
+    thenable.then(({ key }) => {
+      this.lookup(key);
+    });
+    return thenable;
+  }
+
+  save(location): Promise<string | Error> {
     return new Promise((Resolve, Reject) => {
       const { distance, distance_unit, is_closed, id, ...data } = location;
       this.db.object(`/location/${id}`)
