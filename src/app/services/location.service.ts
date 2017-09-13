@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
 import { NavigatorRefService } from './navigator-ref.service';
+import { UserService } from './user.service';
+import { SerialService } from './serial.service';
 
 @Injectable()
 export class LocationService {
@@ -14,6 +16,8 @@ export class LocationService {
   constructor(
     private db: AngularFireDatabase,
     private navigatorService: NavigatorRefService,
+    private user: UserService,
+    private serial: SerialService
   ) {
     this._navigator = navigatorService.nativeNavigator;
     if ('geolocation' in this._navigator) {
@@ -76,6 +80,9 @@ export class LocationService {
   }
 
   checkIn(): firebase.database.ThenableReference {
+    const userKey = this.user.userKey.getValue();
+    const serialKey = this.serial.serialKey.getValue();
+    const locationKey = this.locationKey.getValue();
     /**
      * This pushes a new entry check-in table.
      * Cloud functions will have the duty of creating these relationships:
@@ -90,9 +97,9 @@ export class LocationService {
     return this.checkInList()
       .push({
         timestamp: firebase.database.ServerValue.TIMESTAMP,
-        // userKey,
-        // locationKey,
-        // serialKey,
+        userKey,
+        locationKey,
+        serialKey,
       });
   }
 
