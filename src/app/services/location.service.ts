@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
 import { NavigatorRefService } from './navigator-ref.service';
@@ -7,10 +8,10 @@ import { NavigatorRefService } from './navigator-ref.service';
 @Injectable()
 export class LocationService {
   private _navigator: Navigator;
-  public active: FirebaseObjectObservable<any>;
+  public coords = new BehaviorSubject<Coordinates>(null);
 
   constructor(
-    public db: AngularFireDatabase,
+    private db: AngularFireDatabase,
     private navigatorService: NavigatorRefService,
   ) {
     this._navigator = navigatorService.nativeNavigator;
@@ -47,37 +48,16 @@ export class LocationService {
   }
 
   getLocation(highAccuracy = false): Promise<Coordinates | PositionError> {
+    let position;
     if (highAccuracy) {
-      return this.getAccurate();
+      position = this.getAccurate();
     } else {
-      return this.getQuick();
+      position = this.getQuick();
     }
-  }
-
-  private yelpList(): FirebaseListObservable<any[]> {
-    return this.db.list('yelp-search');
-  }
-
-  private createSearch({ longitude, latitude }: { longitude: number, latitude: number }): firebase.database.ThenableReference {
-    return this.yelpList()
-      .push({
-        status: 'query',
-        latitude,
-        longitude,
-        created: firebase.database.ServerValue.TIMESTAMP
-      });
-  }
-
-  lookupYelp(key: string): void {
-    this.active = this.db.object(`yelp-search/${key}`);
-  }
-
-  searchYelp(coords: Coordinates): firebase.database.ThenableReference {
-    const thenable = this.createSearch(coords);
-    thenable.then(({ key }) => {
-      this.lookupYelp(key);
+    position.then(coords => {
+      this.coords.next(coords);
     });
-    return thenable;
+    return position;
   }
 
   create(location: any): Promise<string | Error> {
@@ -90,10 +70,29 @@ export class LocationService {
     });
   }
 
-  checkin(serialKey: string, locationKey: string): Promise<void | Error> {
-    return new Promise((Resolve, Reject) => {
+  private checkInList(): FirebaseListObservable<any[]> {
+    return this.db.list('check-in');
+  }
 
-    });
+  checkIn(): firebase.database.ThenableReference {
+    /**
+     * This pushes a new entry check-in table.
+     * Cloud functions will have the duty of creating these relationships:
+     * user -> check-ins
+     * user -> locations
+     * user -> serials
+     * location -> users
+     * location -> serials
+     * serial -> users
+     * serial -> locations
+     */
+    return this.checkInList()
+      .push({
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        // userKey,
+        // locationKey,
+        // serialKey,
+      });
   }
 
 }

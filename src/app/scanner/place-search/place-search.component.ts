@@ -4,6 +4,7 @@ import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/data
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { LocationService } from '../../services/location.service';
+import { SearchService } from '../../services/search.service';
 import { SerialService } from '../../services/serial.service';
 
 @Component({
@@ -12,13 +13,13 @@ import { SerialService } from '../../services/serial.service';
   styleUrls: ['./place-search.component.css']
 })
 export class PlaceSearchComponent implements OnInit {
-  public coords = new BehaviorSubject<Coordinates>(null);
   public locating = new BehaviorSubject<boolean>(false);
 
   constructor(
     private route: ActivatedRoute,
     private db: AngularFireDatabase,
     public location: LocationService,
+    public search: SearchService,
     private serial: SerialService
   ) { }
 
@@ -35,7 +36,6 @@ export class PlaceSearchComponent implements OnInit {
     this.locating.next(true);
     this.location.getLocation(highAccuracy)
       .then((coords: Coordinates) => {
-        this.coords.next(coords);
         this.locating.next(false);
       })
       .catch((err: PositionError) => {
@@ -45,12 +45,12 @@ export class PlaceSearchComponent implements OnInit {
   }
 
   searchYelp(): void {
-    const coords = this.coords.getValue();
-    this.location.searchYelp(coords);
+    const coords = this.location.coords.getValue();
+    this.search.query(coords);
   }
 
   chooseLocation(location): void {
-    this.location.create(location)
+    this.location.checkIn()
       .then(locationKey => {
         console.log(locationKey);
         // create checkin entry
