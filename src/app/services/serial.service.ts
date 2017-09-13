@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class SerialService {
   public active: FirebaseObjectObservable<any>;
+  public serialKey = new BehaviorSubject<string>(null);
 
   constructor(
     private db: AngularFireDatabase
@@ -25,6 +27,7 @@ export class SerialService {
 
   lookup(key: string): void {
     this.active = this.db.object(`serial/${key}`);
+    this.serialKey.next(key);
   }
 
 }

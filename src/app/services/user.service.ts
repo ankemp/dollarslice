@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
 @Injectable()
@@ -8,11 +9,17 @@ export class UserService {
   private confirmation: firebase.auth.ConfirmationResult;
   private recaptchaVerifier: firebase.auth.RecaptchaVerifier;
   public user: Observable<firebase.User>;
+  public userKey = new BehaviorSubject<string>(null);
 
   constructor(
     private afAuth: AngularFireAuth,
   ) {
     this.user = afAuth.authState;
+    this.user.subscribe(state => {
+      if (state) {
+        this.userKey.next(state.uid);
+      }
+    });
   }
 
   registerRecaptcha(): void {

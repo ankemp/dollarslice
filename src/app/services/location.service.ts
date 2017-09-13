@@ -9,6 +9,7 @@ import { NavigatorRefService } from './navigator-ref.service';
 export class LocationService {
   private _navigator: Navigator;
   public coords = new BehaviorSubject<Coordinates>(null);
+  public locationKey = new BehaviorSubject<string>(null);
 
   constructor(
     private db: AngularFireDatabase,

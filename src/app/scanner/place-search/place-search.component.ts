@@ -49,12 +49,9 @@ export class PlaceSearchComponent implements OnInit {
     this.search.query(coords);
   }
 
-  chooseLocation(location): void {
-    this.location.checkIn()
-      .then(locationKey => {
-        console.log(locationKey);
-        // create checkin entry
-      });
+  chooseLocation(locationKey: string): void {
+    this.location.locationKey.next(locationKey);
+    this.location.checkIn();
   }
 
 }
