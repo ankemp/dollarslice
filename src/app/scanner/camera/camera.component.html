@@ -1,4 +1,4 @@
-<app-camera-lens *ngIf="!(serial.active | async)" [ngClass]="{'taken': imageTaken | async}"></app-camera-lens>
+<app-camera-lens *ngIf="!(serial.active | async)" [ngClass]="{'taken': imageTaken | async}" lenseAutoOff></app-camera-lens>
 <app-status *ngIf="(serial.active | async)" [object]="serial.active"></app-status>
 <div *ngIf="!(serial.active | async)" [ngClass]="{'taken': imageTaken | async}" class="action-container">
   <button class="capture" (click)="capture()"><i class="material-icons">camera</i></button>

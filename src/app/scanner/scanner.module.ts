@@ -10,6 +10,8 @@ import { SharedModule } from '../shared/shared.module';
 import { CameraService } from '../services/camera.service';
 import { LocationService } from '../services/location.service';
 
+import { AutoOffDirective } from './lens/auto-off.directive';
+
 import { CameraComponent } from './camera/camera.component';
 import { PlaceSearchComponent } from './place-search/place-search.component';
 import { LensComponent } from './lens/lens.component';
@@ -24,6 +26,7 @@ import { LensComponent } from './lens/lens.component';
     SharedModule
   ],
   declarations: [
+    AutoOffDirective,
     CameraComponent,
     PlaceSearchComponent,
     LensComponent
