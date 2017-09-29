@@ -250,9 +250,13 @@
   version "0.0.38"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-0.0.38.tgz#6131569a9fe21fe7bad8abf4a3174ea5a8647bbd"
 
-"@types/jasmine@*", "@types/jasmine@~2.5.53":
+"@types/jasmine@*":
   version "2.5.54"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.54.tgz#a6b5f2ae2afb6e0307774e8c7c608e037d491c63"
+
+"@types/jasmine@~2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.6.0.tgz#997b41a27752b4850af2683bc4a8d8222c25bd02"
 
 "@types/jasminewd2@~2.0.2":
   version "2.0.3"
@@ -1196,9 +1200,9 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-codelyzer@~3.1.1:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/codelyzer/-/codelyzer-3.1.2.tgz#9ff1f041fb9b5ee5dbeb45ba866dfaf04983af04"
+codelyzer@~3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/codelyzer/-/codelyzer-3.2.0.tgz#68eb0a67771ea73006b517053c3035c1838abf14"
   dependencies:
     app-root-path "^2.0.1"
     css-selector-tokenizer "^0.7.0"
