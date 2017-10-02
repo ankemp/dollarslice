@@ -922,8 +922,8 @@ make-dir@^1.0.0:
     pify "^2.3.0"
 
 mathjs@^3.16.3:
-  version "3.16.3"
-  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-3.16.3.tgz#74f21d553d4cb1a82b480541ae1fcb0bd0f6f0aa"
+  version "3.16.4"
+  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-3.16.4.tgz#6223a5e423ff79a8f5da0b4f2991c78044bdf3de"
   dependencies:
     complex.js "2.0.4"
     decimal.js "7.2.3"
