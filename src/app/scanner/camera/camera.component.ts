@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseObjectObservable } from 'angularfire2/database';
 import { Subject } from 'rxjs/Subject';
 
 import { CameraService } from '../../services/camera.service';
@@ -28,13 +27,14 @@ export class CameraComponent {
   upload(): void {
     this.camera.save()
       .then(_ => {
-        this.serial.active.subscribe(dollar => {
-          if (dollar.status === 'complete') {
-            setTimeout(() => {
-              // send to checkin phase
-            }, 1000);
-          }
-        });
+        this.serial.active
+          .subscribe((dollar: any) => {
+            if (dollar.status === 'complete') {
+              setTimeout(() => {
+                // send to checkin phase
+              }, 1000);
+            }
+          });
       });
   }
 

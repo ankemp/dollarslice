@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 import { FileStorageService } from './file-storage.service';
 import { SerialService } from './serial.service';
@@ -76,12 +76,12 @@ export class CameraService {
     });
   }
 
-  save(): Promise<firebase.database.DataSnapshot> {
+  save(): Promise<void> {
     return new Promise(Resolve => {
       this.serial.create()
-        .then(snapshot => {
-          Resolve(snapshot);
-          return Promise.resolve(snapshot);
+        .then((snapshot: firebase.database.Reference) => {
+          Resolve();
+          return snapshot;
         })
         .then((dbSnapshot: firebase.database.ThenableReference) => {
           this.toBlob()

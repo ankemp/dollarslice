@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 
 interface LongLat {
@@ -9,13 +10,14 @@ interface LongLat {
 
 @Injectable()
 export class SearchService {
-  public active: FirebaseObjectObservable<any>;
+  private activeRef: AngularFireObject<any>;
+  public active: Observable<any>;
 
   constructor(
     private db: AngularFireDatabase,
   ) { }
 
-  private list(): FirebaseListObservable<any[]> {
+  private list(): AngularFireList<any> {
     return this.db.list('yelp-search');
   }
 
@@ -30,7 +32,8 @@ export class SearchService {
   }
 
   lookup(key: string): void {
-    this.active = this.db.object(`yelp-search/${key}`);
+    this.activeRef = this.db.object(`yelp-search/${key}`);
+    this.active = this.activeRef.valueChanges();
   }
 
   query(coords: Coordinates): firebase.database.ThenableReference {

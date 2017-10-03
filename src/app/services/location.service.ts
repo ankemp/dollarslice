@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
@@ -53,13 +53,8 @@ export class LocationService {
   }
 
   getLocation(highAccuracy = false): Promise<Coordinates | PositionError> {
-    let position;
-    if (highAccuracy) {
-      position = this.getAccurate();
-    } else {
-      position = this.getQuick();
-    }
-    position.then(coords => {
+    const position = highAccuracy ? this.getAccurate() : this.getQuick();
+    position.then((coords: Coordinates) => {
       this.coords.next(coords);
     });
     return position;
@@ -75,7 +70,7 @@ export class LocationService {
     });
   }
 
-  private checkInList(): FirebaseListObservable<any[]> {
+  private checkInList(): AngularFireList<any> {
     return this.db.list('check-in');
   }
 

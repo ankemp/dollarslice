@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class SerialService {
-  public active: FirebaseObjectObservable<any>;
+  private activeRef: AngularFireObject<any>;
+  public active: Observable<any>;
   public serialKey = new BehaviorSubject<string>(null);
 
   constructor(
     private db: AngularFireDatabase
   ) { }
 
-  private serialList(): FirebaseListObservable<any> {
+  private serialList(): AngularFireList<any> {
     return this.db.list('serial');
   }
 
@@ -26,7 +28,8 @@ export class SerialService {
   }
 
   lookup(key: string): void {
-    this.active = this.db.object(`serial/${key}`);
+    this.activeRef = this.db.object(`serial/${key}`);
+    this.active = this.activeRef.valueChanges();
     this.serialKey.next(key);
   }
 
