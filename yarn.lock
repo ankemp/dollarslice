@@ -162,6 +162,10 @@
   dependencies:
     tsickle "^0.21.0"
 
+"@firebase/webchannel-wrapper@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.1.tgz#2c4dbc15edd1de4f656d543a6f512ded7978ef72"
+
 "@google-cloud/common@^0.13.0":
   version "0.13.5"
   resolved "https://registry.yarnpkg.com/@google-cloud/common/-/common-0.13.5.tgz#b90599f29ce957b366adea8d7c0c3f3593d981ca"
@@ -384,9 +388,9 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angularfire2@4.0.0-rc.2:
-  version "4.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/angularfire2/-/angularfire2-4.0.0-rc.2.tgz#4dd22b877d691a37c009b1fa503d5132cd9970ea"
+angularfire2@5.0.0-rc.1:
+  version "5.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/angularfire2/-/angularfire2-5.0.0-rc.1.tgz#829c943f5bda71758d8b1b44a1cd17eee7227f2a"
 
 ansi-align@^1.1.0:
   version "1.1.0"
@@ -2417,8 +2421,8 @@ find-up@^2.0.0:
     locate-path "^2.0.0"
 
 firebase-tools@^3.9.2:
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-3.12.0.tgz#b88aaebed8d313eb59dea89171b66879a4652898"
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/firebase-tools/-/firebase-tools-3.13.0.tgz#74c40fbbd6070bb2890eb2983a53627b70ef0dc5"
   dependencies:
     JSONStream "^1.2.1"
     archiver "^0.16.0"
@@ -2467,9 +2471,10 @@ firebase@2.x.x:
     faye-websocket ">=0.6.0"
 
 firebase@^4.3.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.4.0.tgz#cffa34964c38ae24157ec930dbe147816fd8e3f4"
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.5.0.tgz#e0973a9803b74c4c9d73d19f874712e6e9d16ba7"
   dependencies:
+    "@firebase/webchannel-wrapper" "^0.2.1"
     dom-storage "^2.0.2"
     faye-websocket "0.9.3"
     jsonwebtoken "^7.3.0"
