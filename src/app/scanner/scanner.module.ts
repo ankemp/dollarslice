@@ -15,6 +15,7 @@ import { AutoOffDirective } from './lens/auto-off.directive';
 import { CameraComponent } from './camera/camera.component';
 import { PlaceSearchComponent } from './place-search/place-search.component';
 import { LensComponent } from './lens/lens.component';
+import { LocateUserComponent } from './locate-user/locate-user.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { LensComponent } from './lens/lens.component';
     AutoOffDirective,
     CameraComponent,
     PlaceSearchComponent,
-    LensComponent
+    LensComponent,
+    LocateUserComponent
   ],
   providers: [
     CameraService,
