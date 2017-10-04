@@ -1,36 +1,34 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class SerialService {
-  private activeRef: AngularFireObject<any>;
+  private activeRef: AngularFirestoreDocument<any>;
   public active: Observable<any>;
   public serialKey = new BehaviorSubject<string>(null);
 
   constructor(
-    private db: AngularFireDatabase
+    private sdb: AngularFirestore
   ) { }
 
-  private serialList(): AngularFireList<any> {
-    return this.db.list('serial');
+  private serialList(): AngularFirestoreCollection<any> {
+    return this.sdb.collection('serial');
   }
 
-  create(): firebase.database.ThenableReference {
-    const d = new Date();
-    const n = d.getTime();
-    const thenable = this.serialList().push({ status: 'new', timestamp: n, rTimestamp: 0 - n });
-    thenable.then(({ key }) => {
-      this.lookup(key);
+  create(): Promise<firebase.firestore.DocumentReference> {
+    const thenable = this.serialList().add({ status: 'new', timestamp: firebase.firestore.FieldValue.serverTimestamp });
+    thenable.then(document => {
+      this.lookup(document.id);
     });
     return thenable;
   }
 
-  lookup(key: string): void {
-    this.activeRef = this.db.object(`serial/${key}`);
+  lookup(id: string): void {
+    this.activeRef = this.serialList().doc(id);
     this.active = this.activeRef.valueChanges();
-    this.serialKey.next(key);
+    this.serialKey.next(id);
   }
 
 }

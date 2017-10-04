@@ -79,18 +79,18 @@ export class CameraService {
   save(): Promise<void> {
     return new Promise(Resolve => {
       this.serial.create()
-        .then((snapshot: firebase.database.Reference) => {
+        .then(document => {
           Resolve();
-          return snapshot;
+          return document;
         })
-        .then((dbSnapshot: firebase.database.ThenableReference) => {
+        .then(document => {
           this.toBlob()
             .then((blob: Blob) => {
-              dbSnapshot.update({ status: 'uploading' });
-              return this.file.upload(dbSnapshot.key, blob, 'serial');
+              document.update({ status: 'uploading' });
+              return this.file.upload(document.id, blob, 'serial');
             })
             .then(fileSnapshot => fileSnapshot.ref.fullPath)
-            .then(path => dbSnapshot.update({ status: 'ocr_queued', image: path }));
+            .then(path => document.update({ status: 'ocr_queued', image: path }));
         });
     });
   }

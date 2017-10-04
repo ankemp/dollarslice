@@ -26,29 +26,25 @@ exports.ocrProcessListener = functions.storage.object()
 
     const gcsImageUri = `gs://${object.bucket}/${object.name}`;
     var image = { source: { gcsImageUri } };
-    const db = firebaseAdmin.database();
-    const itemRef = db.ref(object.name);
-    const statusRef = itemRef.child('status');
+    const sdb = firebaseAdmin.firestore();
+    const itemRef = sdb.doc(object.name);
 
-    return statusRef.set('ocr_processing')
+    return itemRef.update({ status: 'ocr_processing' })
       .then(() => vision.textDetection(image))
       .then(data => {
-        statusRef.set('finding_serial');
+        itemRef.update({ status: 'finding_serial' });
         return lookForSerial(data);
       })
-      .then(serial => {
-        statusRef.set('finalizing');
-        return itemRef.child('serial').set(serial);
-      })
-      .then(() => statusRef.set('complete'))
+      .then(serial => itemRef.update({ status: 'finalizing', serial }))
+      .then(() => itemRef.update({ update: 'complete' }))
       .catch(err => {
         console.log(err);
         // object.ref.delete();
         // TODO: delete image if no serial is found.
         if (typeof err.code !== 'undefined' && err.code === 204) {
-          return statusRef.set(err.message);
+          return itemRef.update({ status: err.message });
         }
-        return statusRef.set('error');
+        return itemRef.update({ status: 'error' });
       });
   });
 
