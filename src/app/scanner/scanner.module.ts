@@ -9,6 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { CameraService } from '../services/camera.service';
 import { LocationService } from '../services/location.service';
+import { SearchService } from '../services/search.service';
 
 import { AutoOffDirective } from './lens/auto-off.directive';
 
@@ -35,7 +36,8 @@ import { LocateUserComponent } from './locate-user/locate-user.component';
   ],
   providers: [
     CameraService,
-    LocationService
+    LocationService,
+    SearchService
   ]
 })
 export class ScannerModule { }

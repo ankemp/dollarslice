@@ -1,0 +1,21 @@
+.pure-button.find-me  {
+  font-size: 125%;
+}
+
+agm-map {
+  height: 300px;
+}
+
+.map-container {
+  width: 100%;
+}
+
+.map-actions {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.map-actions .pure-button,
+.map-actions .pure-button i {
+  font-size: 75%;
+}
