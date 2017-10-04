@@ -28,9 +28,11 @@ export class PlaceSearchComponent implements OnInit {
     }
   }
 
-  chooseLocation(locationKey: string): void {
-    this.location.locationKey.next(locationKey);
-    this.location.checkIn();
+  chooseLocation(place: any): void {
+    this.location.create(place)
+      .then(_ => {
+        this.location.checkIn();
+      });
   }
 
 }

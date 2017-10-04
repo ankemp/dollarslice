@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
@@ -15,6 +16,7 @@ export class LocationService {
 
   constructor(
     private db: AngularFireDatabase,
+    private sdb: AngularFirestore,
     private navigatorService: NavigatorRefService,
     private user: UserService,
     private serial: SerialService
@@ -63,9 +65,11 @@ export class LocationService {
   create(location: any): Promise<string | Error> {
     return new Promise((Resolve, Reject) => {
       const { distance, distance_unit, is_closed, id, ...data } = location;
-      this.db.object(`location/${id}`)
-        .set({ ...data })
-        .then(_ => Resolve(id))
+      this.sdb.collection('location').add({ ...data })
+        .then((ref) => {
+          this.locationKey.next(ref.id);
+          Resolve(ref.id);
+        })
         .catch(Reject);
     });
   }

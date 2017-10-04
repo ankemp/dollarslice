@@ -8,7 +8,7 @@
         <div class="name">{{ place.name }}</div>
         <div class="distance">{{ place.distance | round: 2 }} {{ place.distance_unit }} away</div>
       </div>
-      <button class="choose-location" (click)="chooseLocation(place.id)"><i class="material-icons">add_location</i></button>
+      <button class="choose-location" (click)="chooseLocation(place)"><i class="material-icons">add_location</i></button>
     </div>
   </div>
 </div>
