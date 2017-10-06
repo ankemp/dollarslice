@@ -36,7 +36,7 @@ exports.ocrProcessListener = functions.storage.object()
         return lookForSerial(data);
       })
       .then(serial => itemRef.update({ status: 'finalizing', serial }))
-      .then(() => itemRef.update({ update: 'complete' }))
+      .then(() => itemRef.update({ status: 'complete' }))
       .catch(err => {
         console.log(err);
         // object.ref.delete();

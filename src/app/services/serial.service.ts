@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import * as firebase from 'firebase/app';
 
 @Injectable()
 export class SerialService {
@@ -18,7 +19,7 @@ export class SerialService {
   }
 
   create(): Promise<firebase.firestore.DocumentReference> {
-    const thenable = this.serialList().add({ status: 'new', timestamp: firebase.firestore.FieldValue.serverTimestamp });
+    const thenable = this.serialList().add({ status: 'new', timestamp: firebase.firestore.FieldValue.serverTimestamp() });
     thenable.then(document => {
       this.lookup(document.id);
     });
