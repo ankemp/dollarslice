@@ -31,6 +31,12 @@
   font-size: 12px;
 }
 
+.search-container .place .direction {
+  font-size: 150%;
+  position: relative;
+  top: 6px;
+}
+
 .search-container .place .choose-location {
   appearance: none;
   background-color: transparent;

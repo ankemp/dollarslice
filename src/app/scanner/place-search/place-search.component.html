@@ -6,9 +6,13 @@
       <img class="thumb" src="{{ place.image_url }}" alt="{{ place.name }}">
       <div class="content">
         <div class="name">{{ place.name }}</div>
-        <div class="distance">{{ place.distance | round: 2 }} {{ place.distance_unit }} away</div>
+        <div class="distance">{{ place.distance | round: 2 }} {{ place.distance_unit }} away
+          <i [ngStyle]="{'transform': 'rotate('+ (place.direction*45) +'deg)'}" class="material-icons direction">arrow_upward</i>
+        </div>
       </div>
-      <button class="choose-location" (click)="chooseLocation(place)"><i class="material-icons">add_location</i></button>
+      <button class="choose-location" (click)="chooseLocation(place)">
+        <i class="material-icons">add_location</i>
+      </button>
     </div>
   </div>
 </div>

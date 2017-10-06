@@ -109,6 +109,7 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
             distance = math.unit(distance, 'ft').toNumber('mile');
             business.distance_unit = 'mi';
           }
+          business.direction = getDirection({ longitude: params.longitude, latitude: params.latitude }, business.coordinates);
           business.distance = distance;
           return business;
         });
@@ -119,3 +120,7 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
         console.error(err);
       })
   });
+
+function getDirection(p1, p2) {
+  return math.atan2(p2.latitude - p1.latitude, p2.longitude - p1.longitude);
+}
