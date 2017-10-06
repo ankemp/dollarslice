@@ -6,6 +6,9 @@
       <legend>What's your number?</legend>
       <input type="tel" placeholder="+1 (555) 555-5555" [(ngModel)]="phoneNumber">
       <button class="pure-button pure-button-primary" (click)="signUpSubmit()">Sign Up</button>
+      <p>Need to
+        <a routerLink="/user/login">sign in?</a>
+      </p>
       <p class="fineprint">While we don't charge anything to send you this SMS verification code, your carriers standard SMS rates do apply.</p>
     </div>
 
