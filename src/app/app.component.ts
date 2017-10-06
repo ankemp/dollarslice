@@ -17,6 +17,6 @@ export class AppComponent {
     this.user = userService.user;
   }
 
-  // @todo: Make header components for logged in & logged out:
+  // TODO: Make header components for logged in & logged out:
   // https://stackoverflow.com/questions/38780436/how-to-switch-layouts-in-angular2/38783451#38783451
 }
