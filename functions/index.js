@@ -96,7 +96,7 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
       longitude: event.data.val().longitude
     };
     searchRef.update({ status: 'searching' });
-    yelp.search(params)
+    return yelp.search(params)
       .then(data => {
         searchRef.update({ status: 'parsing' });
         let results = JSON.parse(data);
