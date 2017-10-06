@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 
 import { CameraService } from '../../services/camera.service';
@@ -14,7 +15,8 @@ export class CameraComponent {
 
   constructor(
     private camera: CameraService,
-    public serial: SerialService
+    public serial: SerialService,
+    private router: Router
   ) {
     this.imageTaken.next(false);
   }
@@ -30,8 +32,17 @@ export class CameraComponent {
         this.serial.active
           .subscribe((dollar: any) => {
             if (dollar.status === 'complete') {
+              // TODO: Check for duplicate serials
+              /**
+               * For now this just creates a new DB entry for every serial.
+               * In the future, we need to create a serial-scan entry (RTDB),
+               * when it's done scanning we need to search the Firestore DB for that serial and create a entry if it doesn't exist.
+               * Then create relationships of serial to User
+               * Then redirect to check-in flow
+               */
               setTimeout(() => {
-                // send to checkin phase
+                const serialKey = this.serial.serialKey.getValue();
+                this.router.navigate([`check-in/${serialKey}`]);
               }, 1000);
             }
           });
