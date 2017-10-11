@@ -29,20 +29,12 @@ export class CameraComponent {
   upload(): void {
     this.camera.save()
       .then(_ => {
-        this.serial.active
-          .subscribe((dollar: any) => {
-            if (dollar.status === 'complete') {
-              // TODO: Check for duplicate serials
-              /**
-               * For now this just creates a new DB entry for every serial.
-               * In the future, we need to create a serial-scan entry (RTDB),
-               * when it's done scanning we need to search the Firestore DB for that serial and create a entry if it doesn't exist.
-               * Then create relationships of serial to User
-               * Then redirect to check-in flow
-               */
+        this.serial.task
+          .subscribe(({ status, serial }) => {
+            if (status === 'complete') {
+              this.serial.lookup(serial);
               setTimeout(() => {
-                const serialKey = this.serial.serialKey.getValue();
-                this.router.navigate([`check-in/${serialKey}`]);
+                this.router.navigate([`check-in/${serial}`]);
               }, 1000);
             }
           });

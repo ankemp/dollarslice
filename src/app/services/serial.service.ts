@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from "angularfire2/database";
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -8,20 +9,28 @@ import * as firebase from 'firebase/app';
 export class SerialService {
   private activeRef: AngularFirestoreDocument<any>;
   public active: Observable<any>;
+  private taskRef: AngularFireObject<any>;
+  public task: Observable<any>;
   public serialKey = new BehaviorSubject<string>(null);
 
   constructor(
+    private db: AngularFireDatabase,
     private sdb: AngularFirestore
   ) { }
+
+  private scanQueue(): AngularFireList<any> {
+    return this.db.list('scan-queue')
+  }
 
   private serialList(): AngularFirestoreCollection<any> {
     return this.sdb.collection('serial');
   }
 
-  create(): Promise<firebase.firestore.DocumentReference> {
-    const thenable = this.serialList().add({ status: 'new', timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-    thenable.then(document => {
-      this.lookup(document.id);
+  newTask(): firebase.database.ThenableReference {
+    const thenable = this.scanQueue().push({ status: 'new', timestamp: firebase.database.ServerValue.TIMESTAMP });
+    thenable.then(({ key }) => {
+      this.taskRef = this.db.object(`scan-queue/${key}`);
+      this.task = this.taskRef.valueChanges();
     });
     return thenable;
   }

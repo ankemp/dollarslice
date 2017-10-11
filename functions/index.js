@@ -25,26 +25,46 @@ exports.ocrProcessListener = functions.storage.object()
     }
 
     const gcsImageUri = `gs://${object.bucket}/${object.name}`;
-    var image = { source: { gcsImageUri } };
-    const sdb = firebaseAdmin.firestore();
-    const itemRef = sdb.doc(object.name);
+    const image = { source: { gcsImageUri } };
 
-    return itemRef.update({ status: 'ocr_processing' })
+    const sdb = firebaseAdmin.firestore();
+    const serialCol = sdb.collection('serial');
+
+    const db = firebaseAdmin.database();
+    const key = _.last(_.split(object.name, '/'));
+    const itemRef = db.ref(`scan-queue/${key}`);
+    const statusRef = itemRef.child('status');
+
+    return statusRef.set('ocr_processing')
       .then(() => vision.textDetection(image))
       .then(data => {
-        itemRef.update({ status: 'finding_serial' });
+        statusRef.set('finding_serial');
         return lookForSerial(data);
       })
-      .then(serial => itemRef.update({ status: 'finalizing', serial }))
-      .then(() => itemRef.update({ status: 'complete' }))
+      .then(serial => {
+        statusRef.set('saving_serial');
+        const docRef = serialCol.doc(serial);
+        docRef.get().then(doc => {
+          if (!doc.exists) {
+            docRef.set({ serial, image: object.name, timestamp: Date.now() });
+          }
+        });
+        return serial;
+      })
+      .then(serial => {
+        itemRef.update({ serial });
+        statusRef.set('finalizing');
+      })
+      .then(() => statusRef.set('complete'))
       .catch(err => {
         console.log(err);
-        // object.ref.delete();
-        // TODO: delete image if no serial is found.
-        if (typeof err.code !== 'undefined' && err.code === 204) {
-          return itemRef.update({ status: err.message });
+        if (!_.isUndefined(err.code) && err.message === 'error_no_serial') {
+          // Delete bad image here
         }
-        return itemRef.update({ status: 'error' });
+        if (!_.isUndefined(err.code) && err.code === 204) {
+          return statusRef.set(err.message);
+        }
+        return statusRef.set('server_error');
       });
   });
 
