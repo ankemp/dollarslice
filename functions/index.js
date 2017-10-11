@@ -133,10 +133,10 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
           business.distance = distance;
           return business;
         });
-        searchRef.update({ status: 'complete', results });
+        return searchRef.update({ status: 'complete', results });
       })
       .catch(err => {
-        searchRef.update({ status: 'error' });
+        return searchRef.update({ status: 'error' });
         console.error(err);
       })
   });
