@@ -64,7 +64,7 @@ export class CameraService {
   }
 
   capture(): void {
-    this.context.drawImage(this.player, 0, 0, 500, 700);
+    this.context.drawImage(this.player, 0, -100, 500, 700);
     this.stopStream();
   }
 

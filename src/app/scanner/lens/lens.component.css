@@ -31,3 +31,18 @@
 :host().taken .preview {
   display: block;
 }
+
+:host():not(.taken) .viewport .scan-box {
+  align-items: center;
+  background-color: #ffffff;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  left: 50%;
+  opacity: 0.30;
+  position: absolute;
+  top: calc(50% - 50px);
+  transform: translateX(-50%);
+  width: 65%;
+  z-index: 999;
+}
