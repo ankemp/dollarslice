@@ -1,16 +1,20 @@
 <div class="app-container">
-  <h2 class="hug">My Account</h2>
+  <h3 class="hug">My Account</h3>
 
   <div class="profile">
     <div [ngClass]="{'active': checkField('name')}" class="pure-form">
       <label for="name-field">Display Name</label>
       <div class="field-container">
         <span *ngIf="profileFields.displayName">{{ profileFields.displayName }}</span>
-        <button class="edit" (click)="startEdit('name')"><i class="material-icons">mode_edit</i></button>
+        <button class="edit" (click)="startEdit('name')">
+          <i class="material-icons">mode_edit</i>
+        </button>
       </div>
       <div class="input-container">
         <input id="name-field" type="text" placeholder="Name" [(ngModel)]="profileFields.displayName" />
-        <button class="done" (click)="updateDisplayName()"><i class="material-icons">done</i></button>
+        <button class="done" (click)="updateDisplayName()">
+          <i class="material-icons">done</i>
+        </button>
       </div>
     </div>
 
@@ -18,11 +22,15 @@
       <label for="email-field">Email</label>
       <div class="field-container">
         <span *ngIf="profileFields.email">{{ profileFields.email }}</span>
-        <button class="edit" (click)="startEdit('email')"><i class="material-icons">mode_edit</i></button>
+        <button class="edit" (click)="startEdit('email')">
+          <i class="material-icons">mode_edit</i>
+        </button>
       </div>
       <div class="input-container">
         <input id="email-field" type="email" placeholder="Email" [(ngModel)]="profileFields.email" />
-        <button class="done" (click)="updateEmail()"><i class="material-icons">done</i></button>
+        <button class="done" (click)="updateEmail()">
+          <i class="material-icons">done</i>
+        </button>
       </div>
     </div>
   </div>
@@ -44,7 +52,9 @@
   </div>
 
   <div class="logout">
-    <button class="pure-button" (click)="logout()">Logout <i class="material-icons">exit_to_app</i></button>
+    <button class="pure-button" (click)="logout()">Logout
+      <i class="material-icons">exit_to_app</i>
+    </button>
   </div>
 
 </div>
