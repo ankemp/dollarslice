@@ -29,10 +29,10 @@ export class PlaceSearchComponent implements OnInit {
   }
 
   chooseLocation(place: any): void {
-    // TODO: Create & use a findOrCreate type method
-    this.location.create(place)
-      .then(_ => {
-        this.location.checkIn();
+    this.location.findOrCreate(place)
+      .then(id => {
+        console.log('findOrCreate', id);
+        // this.location.checkIn();
       });
   }
 

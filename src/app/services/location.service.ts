@@ -62,15 +62,37 @@ export class LocationService {
     return position;
   }
 
+  private get locationCollection(): AngularFirestoreCollection<any> {
+    return this.sdb.collection('location');
+  }
+
   create(location: any): Promise<string | Error> {
     return new Promise((Resolve, Reject) => {
       const { distance, distance_unit, is_closed, id, ...data } = location;
-      this.sdb.collection('location').add({ ...data })
+      this.locationCollection.doc(id).set({ ...data })
         .then((ref) => {
-          this.locationKey.next(ref.id);
-          Resolve(ref.id);
+          this.locationKey.next(id);
+          Resolve(id);
         })
         .catch(Reject);
+    });
+  }
+
+  findOrCreate(location: any): Promise<string | Error> {
+    return new Promise((Resolve, Reject) => {
+      const { id } = location;
+      const docRef = this.locationCollection.doc(id);
+      docRef.ref.get()
+        .then(document => {
+          if (document.exists) {
+            return id;
+          }
+          return this.create(location);
+        })
+        .then(id => {
+          Resolve(id);
+        })
+        .catch(err => Reject(err));
     });
   }
 
