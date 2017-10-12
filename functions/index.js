@@ -142,5 +142,11 @@ exports.yelpSearch = functions.database.ref('/yelp-search/{queryid}')
   });
 
 function getDirection(p1, p2) {
-  return math.atan2(p2.latitude - p1.latitude, p2.longitude - p1.longitude);
+  const latitude = math.subtract(p2.latitude, p1.latitude);
+
+  const y = math.sin(latitude) * math.cos(p2.latitude);
+  const x = math.cos(p1.latitude) * math.sin(p1.latitude) - math.sin(p1.latitude) * math.cos(p1.latitude) * math.cos(latitude);
+
+  const brng = math.atan2(y, x) * 180 / math.pi;
+  return 360 - ((brng + 360) % 360);
 }
