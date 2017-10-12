@@ -53,7 +53,7 @@ exports.ocrProcessListener = functions.storage.object()
       })
       .then(serial => {
         itemRef.update({ serial });
-        statusRef.set('finalizing');
+        return statusRef.set('finalizing');
       })
       .then(() => statusRef.set('complete'))
       .catch(err => {
