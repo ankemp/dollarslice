@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from "angularfire2/database";
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -19,7 +19,7 @@ export class SerialService {
   ) { }
 
   private scanQueue(): AngularFireList<any> {
-    return this.db.list('scan-queue')
+    return this.db.list('scan-queue');
   }
 
   private serialList(): AngularFirestoreCollection<any> {

@@ -85,11 +85,11 @@ export class LocationService {
       docRef.ref.get()
         .then(document => {
           if (document.exists) {
-            return id;
+            return;
           }
           return this.create(location);
         })
-        .then(id => {
+        .then(_ => {
           Resolve(id);
         })
         .catch(err => Reject(err));
