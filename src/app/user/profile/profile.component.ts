@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as firebase from 'firebase';
 
 import { UserService } from '../../services/user.service';
 import { FileStorageService } from '../../services/file-storage.service';
