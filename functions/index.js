@@ -169,5 +169,5 @@ function cleanRTDBChildren(event) {
   });
 }
 
-exports.cleanOldSearches = functions.database.ref('/yelp-search/{pushId}').onWrite(cleanRTDBChildren);
-exports.cleanOldScans = functions.database.ref('/scan-queue/{pushId}').onWrite(cleanRTDBChildren);
+exports.cleanOldSearches = functions.database.ref('/yelp-search/{pushId}').onCreate(cleanRTDBChildren);
+exports.cleanOldScans = functions.database.ref('/scan-queue/{pushId}').onCreate(cleanRTDBChildren);
