@@ -2,11 +2,13 @@
   "rules": {
     "scan-queue": {
       ".read": "auth != null",
-      ".write": "auth != null"
+      ".write": "auth != null",
+      ".indexOn": "timestamp"
     },
     "yelp-search": {
       ".read": "auth != null",
-      ".write": "auth != null"
+      ".write": "auth != null",
+      ".indexOn": "timestamp"
     }
   }
 }

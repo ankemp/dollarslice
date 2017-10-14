@@ -161,7 +161,7 @@ function cleanRTDBChildren(event) {
   const cutoff = now - CUT_OFF_TIME;
   const oldItemsQuery = ref.orderByChild('timestamp').endAt(cutoff);
   return oldItemsQuery.once('value').then(snapshot => {
-    const updates = _.reduce(snapshot, (result, value, key) => {
+    const updates = _.reduce(snapshot, (result, child) => {
       result[child.key] = null;
       return result;
     }, {});
