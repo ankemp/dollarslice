@@ -26,7 +26,7 @@ export class SearchService {
       status: 'query',
       latitude,
       longitude,
-      created: firebase.database.ServerValue.TIMESTAMP
+      timestamp: firebase.database.ServerValue.TIMESTAMP
     });
   }
 
