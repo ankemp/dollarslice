@@ -34,10 +34,7 @@ export class UserService {
           this.confirmation = confirmationResult;
           return Resolve();
         })
-        .catch(err => {
-          console.error(err);
-          return Reject(err);
-        });
+        .catch(err => Reject(err));
 
     });
   }
@@ -46,14 +43,8 @@ export class UserService {
     return new Promise((Resolve, Reject) => {
       this.confirmation
         .confirm(confirmCode)
-        .then((result) => {
-          console.log(result);
-          return Resolve();
-        })
-        .catch((err) => {
-          console.log(err);
-          return Reject(err);
-        });
+        .then(result => Resolve())
+        .catch(err => Reject(err));
     });
   }
 
