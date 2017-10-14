@@ -53,7 +53,7 @@ export class LocationService {
   create(location: any): Promise<string | Error> {
     return new Promise((Resolve, Reject) => {
       const { distance, distance_unit, is_closed, id, ...data } = location;
-      this.lookup(id).set({ ...data })
+      this.lookup(id).set({ ...data, timestamp: firebase.firestore.FieldValue.serverTimestamp })
         .then(_ => Resolve(id))
         .catch(Reject);
     });
@@ -70,11 +70,11 @@ export class LocationService {
     });
   }
 
-  private get checkInList(): AngularFireList<any> {
-    return this.db.list('check-in');
+  private get checkInList(): AngularFirestoreCollection<any> {
+    return this.sdb.collection('check-in');
   }
 
-  checkIn(): firebase.database.ThenableReference {
+  checkIn(): Promise<firebase.firestore.DocumentReference> {
     const userKey = this.user.userKey.getValue();
     const serialKey = this.serial.serialKey.getValue();
     const locationKey = this.locationKey.getValue();
@@ -89,8 +89,8 @@ export class LocationService {
      * serial -> users
      * serial -> locations
      */
-    return this.checkInList.push({
-      timestamp: firebase.database.ServerValue.TIMESTAMP,
+    return this.checkInList.add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp,
       userKey,
       locationKey,
       serialKey,
