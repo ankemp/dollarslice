@@ -7,6 +7,9 @@ const _ = require('lodash');
 const math = require('mathjs');
 firebaseAdmin.initializeApp(functions.config().firebase)
 
+// Cut off time. Child nodes older than this will be deleted.
+const CUT_OFF_TIME = 2 * 60 * 60 * 1000; // 2 Hours in milliseconds.
+
 const yelpCreds = {
   app_id: functions.config().yelp.app_id,
   app_secret: functions.config().yelp.app
@@ -149,4 +152,22 @@ function getDirection(p1, p2) {
 
   const brng = math.atan2(y, x) * 180 / math.pi;
   return 360 - ((brng + 360) % 360);
+
 }
+
+function cleanRTDBChildren(event) {
+  const ref = event.data.ref.parent;
+  const now = Date.now();
+  const cutoff = now - CUT_OFF_TIME;
+  const oldItemsQuery = ref.orderByChild('timestamp').endAt(cutoff);
+  return oldItemsQuery.once('value').then(snapshot => {
+    const updates = _.reduce(snapshot, (result, value, key) => {
+      result[child.key] = null;
+      return result;
+    }, {});
+    return ref.update(updates);
+  });
+}
+
+exports.cleanOldSearches = functions.database.ref('/yelp-search/{pushId}').onWrite(cleanRTDBChildren);
+exports.cleanOldScans = functions.database.ref('/scan-queue/{pushId}').onWrite(cleanRTDBChildren);
