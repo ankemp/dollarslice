@@ -1,6 +1,12 @@
 {
   "rules": {
-    ".read": true,
-    ".write": true
+    "scan-queue": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "yelp-search": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
   }
 }
