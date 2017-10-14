@@ -83,15 +83,8 @@ export class LocationService {
       const { id } = location;
       const docRef = this.locationCollection.doc(id);
       docRef.ref.get()
-        .then(document => {
-          if (document.exists) {
-            return;
-          }
-          return this.create(location);
-        })
-        .then(_ => {
-          Resolve(id);
-        })
+        .then(({ exists }) => exists ? null : this.create(location))
+        .then(_ => Resolve(id))
         .catch(err => Reject(err));
     });
   }

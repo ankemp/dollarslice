@@ -17,18 +17,17 @@ export class SearchService {
     private db: AngularFireDatabase,
   ) { }
 
-  private list(): AngularFireList<any> {
+  private get list(): AngularFireList<any> {
     return this.db.list('yelp-search');
   }
 
   private create({ longitude, latitude }: LongLat): firebase.database.ThenableReference {
-    return this.list()
-      .push({
-        status: 'query',
-        latitude,
-        longitude,
-        created: firebase.database.ServerValue.TIMESTAMP
-      });
+    return this.list.push({
+      status: 'query',
+      latitude,
+      longitude,
+      created: firebase.database.ServerValue.TIMESTAMP
+    });
   }
 
   lookup(key: string): void {

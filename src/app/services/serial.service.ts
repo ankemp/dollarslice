@@ -18,16 +18,16 @@ export class SerialService {
     private sdb: AngularFirestore
   ) { }
 
-  private scanQueue(): AngularFireList<any> {
+  private get scanQueue(): AngularFireList<any> {
     return this.db.list('scan-queue');
   }
 
-  private serialList(): AngularFirestoreCollection<any> {
+  private get serialList(): AngularFirestoreCollection<any> {
     return this.sdb.collection('serial');
   }
 
   newTask(): firebase.database.ThenableReference {
-    const thenable = this.scanQueue().push({ status: 'new', timestamp: firebase.database.ServerValue.TIMESTAMP });
+    const thenable = this.scanQueue.push({ status: 'new', timestamp: firebase.database.ServerValue.TIMESTAMP });
     thenable.then(({ key }) => {
       this.taskRef = this.db.object(`scan-queue/${key}`);
       this.task = this.taskRef.valueChanges();
@@ -36,7 +36,7 @@ export class SerialService {
   }
 
   lookup(id: string): void {
-    this.activeRef = this.serialList().doc(id);
+    this.activeRef = this.serialList.doc(id);
     this.active = this.activeRef.valueChanges();
     this.serialKey.next(id);
   }
