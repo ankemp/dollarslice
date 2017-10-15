@@ -1,13 +1,17 @@
-<button *ngIf="!(location.coords | async)" class="pure-button pure-button-primary find-me" [disabled]="(locating | async)"
-  (click)="findMe()"><i [ngClass]="{'material-icons-spin': (locating | async)}" class="material-icons">{{ (locating | async) ? 'autorenew' : 'my_location' }}</i> Find Me</button>
-<div *ngIf="(location.coords | async)" class="map-container">
-  <agm-map [latitude]="(location.coords | async)?.latitude" [longitude]="(location.coords | async)?.longitude" [mapDraggable]="false"
-    [streetViewControl]="false" [zoomControl]="false" [panControl]="false" [gestureHandling]="false" [maxZoom]="17" [minZoom]="17"
-    [zoom]="17">
-    <agm-marker [latitude]="(location.coords | async)?.latitude" [longitude]="(location.coords | async)?.longitude"></agm-marker>
-  </agm-map>
-  <div class="map-actions">
-    <button class="pure-button pure-button-primary" (click)="findMe(true)" [disabled]="(locating | async)"><i [ngClass]="{'material-icons-spin': (locating | async)}" class="material-icons">{{ (locating | async) ? 'autorenew' : 'my_location' }}</i> Increase Accuracy</button>
-    <button class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
+<div class="app-container">
+  <button *ngIf="!(location.coords | async)" class="pure-button pure-button-primary find-me" [disabled]="(locating | async)"
+    (click)="findMe()">
+    <i [ngClass]="{'material-icons-spin': (locating | async)}" class="material-icons">{{ (locating | async) ? 'autorenew' : 'my_location' }}</i> Find Me</button>
+  <div *ngIf="(location.coords | async)" class="map-container">
+    <agm-map [latitude]="(location.coords | async)?.latitude" [longitude]="(location.coords | async)?.longitude" [mapDraggable]="false"
+      [streetViewControl]="false" [zoomControl]="false" [panControl]="false" [gestureHandling]="false" [maxZoom]="17" [minZoom]="17"
+      [zoom]="17">
+      <agm-marker [latitude]="(location.coords | async)?.latitude" [longitude]="(location.coords | async)?.longitude"></agm-marker>
+    </agm-map>
+    <div class="map-actions">
+      <button class="pure-button pure-button-primary" (click)="findMe(true)" [disabled]="(locating | async)">
+        <i [ngClass]="{'material-icons-spin': (locating | async)}" class="material-icons">{{ (locating | async) ? 'autorenew' : 'my_location' }}</i> Increase Accuracy</button>
+      <button class="pure-button pure-button-primary" (click)="searchYelp()">That's me!</button>
+    </div>
   </div>
 </div>

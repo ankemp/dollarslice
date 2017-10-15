@@ -34,7 +34,7 @@ export class CameraComponent {
             if (status === 'complete') {
               this.serial.lookup(serial);
               setTimeout(() => {
-                this.router.navigate([`check-in/${serial}`]);
+                this.router.navigate([`locate/${serial}`]);
               }, 1000);
             }
           });

@@ -1,5 +1,4 @@
 <div class="app-container">
-  <app-locate-user *ngIf="!(search.active | async)"></app-locate-user>
   <app-status *ngIf="(search.active | async)" [object]="search.active"></app-status>
   <div *ngIf="(search.active | async)" class="search-container">
     <div *ngFor="let place of (search.active | async)?.results" id="{{ place.id }}" class="place">

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { LocationService } from '../../services/location.service';
-import { SearchService } from '../../services/search.service';
+import { SerialService } from '../../services/serial.service';
 
 @Component({
   selector: 'app-locate-user',
@@ -13,9 +14,18 @@ export class LocateUserComponent {
   public locating = new BehaviorSubject<boolean>(false);
 
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     public location: LocationService,
-    private search: SearchService,
-  ) { }
+    private serial: SerialService,
+  ) {
+    if (!this.serial.active) {
+      this.route.paramMap.subscribe((params: ParamMap) => {
+        const key = params.get('serialKey');
+        this.serial.lookup(key);
+      });
+    }
+  }
 
   findMe(highAccuracy = false): void {
     this.locating.next(true);
@@ -24,14 +34,13 @@ export class LocateUserComponent {
         this.locating.next(false);
       })
       .catch((err: PositionError) => {
-        console.error(err);
         this.locating.next(false);
       });
   }
 
   searchYelp(): void {
-    const coords = this.location.coords.getValue();
-    this.search.query(coords);
+    const serial = this.serial.serialKey.getValue();
+    this.router.navigate([`check-in/${serial}`]);
   }
 
 }
