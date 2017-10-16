@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { LocationService } from '../../services/location.service';
 import { SearchService } from '../../services/search.service';
 import { SerialService } from '../../services/serial.service';
+import { CheckInService } from '../../services/check-in.service';
 
 @Component({
   selector: 'app-place-search',
@@ -17,7 +18,8 @@ export class PlaceSearchComponent implements OnInit {
     private router: Router,
     public location: LocationService,
     public search: SearchService,
-    private serial: SerialService
+    private serial: SerialService,
+    private checkIn: CheckInService
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,7 @@ export class PlaceSearchComponent implements OnInit {
     this.location.findOrCreate(place)
       .then(id => {
         console.log('findOrCreate', id);
-        this.location.checkIn();
+        this.checkIn.create();
       });
   }
 

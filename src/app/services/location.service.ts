@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -18,7 +17,6 @@ export class LocationService {
   public locationKey = new BehaviorSubject<string>(null);
 
   constructor(
-    private db: AngularFireDatabase,
     private sdb: AngularFirestore,
     private navigatorService: NavigatorRefService,
     private user: UserService,
@@ -76,34 +74,6 @@ export class LocationService {
         .then(_ => Resolve(id))
         .catch(err => Reject(err));
     });
-  }
-
-  private get checkInList(): AngularFirestoreCollection<any> {
-    return this.sdb.collection('check-in');
-  }
-
-  checkIn(): Promise<firebase.firestore.DocumentReference> {
-    const userKey = this.user.userKey.getValue();
-    const serialKey = this.serial.serialKey.getValue();
-    const locationKey = this.locationKey.getValue();
-    /**
-     * This pushes a new entry check-in table.
-     * Cloud functions will have the duty of creating these relationships:
-     * user -> check-ins
-     * user -> locations
-     * user -> serials
-     * location -> users
-     * location -> serials
-     * serial -> users
-     * serial -> locations
-     */
-    const promise = this.checkInList.add({
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      userKey,
-      location: this.lookup(locationKey).ref,
-      serial: this.serial.lookup(serialKey).ref,
-    });
-    return promise;
   }
 
 }
