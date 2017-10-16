@@ -53,7 +53,7 @@ export class LocationService {
   create(location: any): Promise<string | Error> {
     return new Promise((Resolve, Reject) => {
       const { distance, distance_unit, is_closed, id, ...data } = location;
-      this.lookup(id).set({ ...data, timestamp: firebase.firestore.FieldValue.serverTimestamp })
+      this.lookup(id).set({ ...data, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
         .then(_ => Resolve(id))
         .catch(Reject);
     });
@@ -89,12 +89,13 @@ export class LocationService {
      * serial -> users
      * serial -> locations
      */
-    return this.checkInList.add({
-      timestamp: firebase.firestore.FieldValue.serverTimestamp,
+    const promise = this.checkInList.add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       userKey,
-      locationKey,
-      serialKey,
+      location: this.lookup(locationKey).ref,
+      serial: this.serial.lookup(serialKey).ref,
     });
+    return promise;
   }
 
 }

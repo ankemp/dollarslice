@@ -35,10 +35,11 @@ export class SerialService {
     return thenable;
   }
 
-  lookup(id: string): void {
+  lookup(id: string): AngularFirestoreDocument<any> {
     this.activeRef = this.serialList.doc(id);
     this.active = this.activeRef.valueChanges();
     this.serialKey.next(id);
+    return this.activeRef;
   }
 
 }
