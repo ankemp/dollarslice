@@ -312,8 +312,8 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.89.tgz#154be0e6a823760cd6083aa8c48f952e2e63e0b0"
 
 "@types/node@^8.0.24":
-  version "8.0.36"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.36.tgz#5e18eb72e9445b56c7030b8469d4a6a099ca5360"
+  version "8.0.40"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.40.tgz#260f0440db0643f034c9103bba0be777ce25317c"
 
 "@types/q@^0.0.32":
   version "0.0.32"
