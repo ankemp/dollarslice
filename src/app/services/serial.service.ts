@@ -36,9 +36,12 @@ export class SerialService {
   }
 
   lookup(id: string): AngularFirestoreDocument<any> {
-    this.activeRef = this.serialList.doc(id);
-    this.active = this.activeRef.valueChanges();
-    this.serialKey.next(id);
+    const currentId = this.serialKey.getValue();
+    if (id !== currentId) {
+      this.activeRef = this.serialList.doc(id);
+      this.active = this.activeRef.valueChanges();
+      this.serialKey.next(id);
+    }
     return this.activeRef;
   }
 
