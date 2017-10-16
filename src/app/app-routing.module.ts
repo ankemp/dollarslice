@@ -5,6 +5,7 @@ import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', loadChildren: 'app/scanner/scanner.module#ScannerModule', canActivate: [AuthGuard] },
+  { path: 'stream', loadChildren: 'app/stream/stream.module#StreamModule' },
   { path: 'user', loadChildren: 'app/user/user.module#UserModule' },
 ];
 
