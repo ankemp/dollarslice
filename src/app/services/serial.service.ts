@@ -35,7 +35,7 @@ export class SerialService {
     return thenable;
   }
 
-  lookup(id: string): AngularFirestoreDocument<any> {
+  lookup(id = this.serialKey.getValue()): AngularFirestoreDocument<any> {
     const currentId = this.serialKey.getValue();
     if (id !== currentId) {
       this.activeRef = this.serialList.doc(id);

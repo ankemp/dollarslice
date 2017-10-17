@@ -70,15 +70,16 @@ export class UserService {
     return this.profileRef;
   }
 
-  private updateDB(uid: string, fields: any): Promise<void> {
+  private updateDB(uid = this.userKey.getValue(), fields: any): Promise<void> {
     const { displayName, email, emailVerified, phoneNumber, photoURL } = fields;
     const profile = Object.assign({}, { displayName }, { email }, { emailVerified }, { phoneNumber }, { photoURL });
     const docRef = this.userCollection.doc(uid);
     return docRef.ref.get().then(({ exists }) => {
+      const timestamp = firebase.firestore.FieldValue.serverTimestamp();
       if (exists) {
-        return docRef.update({ ...profile, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+        return docRef.update({ ...profile, updated: timestamp });
       }
-      return docRef.set({ ...profile, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+      return docRef.set({ ...profile, created: timestamp, updated: timestamp });
     });
   }
 

@@ -46,7 +46,7 @@ export class LocationService {
     return this.sdb.collection('location');
   }
 
-  lookup(id: string): AngularFirestoreDocument<any> {
+  lookup(id = this.locationKey.getValue()): AngularFirestoreDocument<any> {
     const currentID = this.locationKey.getValue();
     if (id !== currentID) {
       this.activeRef = this.locationCollection.doc(id);
