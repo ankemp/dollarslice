@@ -2,10 +2,10 @@
   <h3 class="hug">My Account</h3>
 
   <div class="profile">
-    <div [ngClass]="{'active': checkField('name')}" class="pure-form">
+    <div [ngClass]="{'active': (activeField | async) === 'name'}" class="pure-form">
       <label for="name-field">Display Name</label>
       <div class="field-container">
-        <span *ngIf="profileFields.displayName">{{ profileFields.displayName }}</span>
+        <span>{{ (profile | async)?.displayName }}</span>
         <button class="edit" (click)="startEdit('name')">
           <i class="material-icons">mode_edit</i>
         </button>
@@ -18,10 +18,10 @@
       </div>
     </div>
 
-    <div [ngClass]="{'active': checkField('email')}" class="pure-form">
+    <div [ngClass]="{'active': (activeField | async) === 'email'}" class="pure-form">
       <label for="email-field">Email</label>
       <div class="field-container">
-        <span *ngIf="profileFields.email">{{ profileFields.email }}</span>
+        <span>{{ (profile | async)?.email }}</span>
         <button class="edit" (click)="startEdit('email')">
           <i class="material-icons">mode_edit</i>
         </button>
@@ -32,27 +32,28 @@
           <i class="material-icons">done</i>
         </button>
       </div>
+      <span *ngIf="!(profile | async)?.emailVerified && (profile | async)?.email">Email not verified</span>
     </div>
-  </div>
 
-  <div [ngClass]="{'active': checkField('photo')}" class="pure-form">
-    <label for="picture-field">Photo (1mb limit)</label>
-    <div class="field-container">
-      <img class="profile-image" src="{{ profileFields.photoURL }}" alt="Profile Image">
-      <button class="edit" (click)="startEdit('photo', false)">
-        <i class="material-icons">mode_edit</i>
-      </button>
-    </div>
-    <div class="input-container">
-      <input id="photo-field" type="file">
-      <button class="done" (click)="updateProfileImage()" [disabled]="profileUploading">
-        <i [ngClass]="{'material-icons-spin': profileUploading}" class="material-icons">{{ profileUploading ? 'autorenew' : 'file_upload' }}</i>
-      </button>
+    <div [ngClass]="{'active': (activeField | async) === 'photo'}" class="pure-form">
+      <label for="picture-field">Photo (1mb limit)</label>
+      <div class="field-container">
+        <img class="profile-image" src="{{ (profile | async)?.photoURL }}" alt="Profile Image">
+        <button class="edit" (click)="startEdit('photo', false)">
+          <i class="material-icons">mode_edit</i>
+        </button>
+      </div>
+      <div class="input-container">
+        <input id="photo-field" type="file">
+        <button class="done" (click)="updateProfileImage()" [disabled]="profileUploading | async">
+          <i [ngClass]="{'material-icons-spin': profileUploading | async}" class="material-icons">{{ (profileUploading | async) ? 'autorenew' : 'file_upload' }}</i>
+        </button>
+      </div>
     </div>
   </div>
 
   <div class="logout">
-    <button class="pure-button" (click)="logout()">Logout
+    <button class="pure-button" (click)="user.logout()">Logout
       <i class="material-icons">exit_to_app</i>
     </button>
   </div>
