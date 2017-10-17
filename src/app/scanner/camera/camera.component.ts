@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { CameraService } from '../../services/camera.service';
 import { SerialService } from '../../services/serial.service';
@@ -11,15 +11,13 @@ import { SerialService } from '../../services/serial.service';
   styleUrls: ['./camera.component.css']
 })
 export class CameraComponent {
-  imageTaken = new Subject<boolean>();
+  imageTaken = new BehaviorSubject<boolean>(false);
 
   constructor(
     private camera: CameraService,
     public serial: SerialService,
     private router: Router
-  ) {
-    this.imageTaken.next(false);
-  }
+  ) { }
 
   capture(): void {
     this.camera.capture();
