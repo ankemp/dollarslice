@@ -21,7 +21,6 @@ export class UserService {
     this.user = afAuth.authState;
     this.user.subscribe(state => {
       if (state) {
-        this.userKey.next(state.uid);
         this.lookup(state.uid);
       }
     });
@@ -66,6 +65,7 @@ export class UserService {
     if (currentUid !== uid) {
       this.profileRef = this.userCollection.doc(uid);
       this.profile = this.profileRef.valueChanges();
+      this.userKey.next(uid);
     }
     return this.profileRef;
   }
