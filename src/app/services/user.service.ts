@@ -9,9 +9,9 @@ import * as firebase from 'firebase/app';
 export class UserService {
   private confirmation: firebase.auth.ConfirmationResult;
   private recaptchaVerifier: firebase.auth.RecaptchaVerifier;
-  public user: Observable<firebase.User>;
   private profileRef: AngularFirestoreDocument<any>;
   public profile: Observable<any>;
+  public user: Observable<firebase.User>;
   public userKey = new BehaviorSubject<string>(null);
 
   constructor(
@@ -19,9 +19,9 @@ export class UserService {
     private sdb: AngularFirestore
   ) {
     this.user = afAuth.authState;
-    this.user.subscribe(state => {
+    this.user.subscribe(({ uid, ...state }) => {
       if (state) {
-        this.lookup(state.uid);
+        this.lookup(uid);
       }
     });
   }
@@ -60,7 +60,7 @@ export class UserService {
     return this.sdb.collection('user');
   }
 
-  lookup(uid: string): AngularFirestoreDocument<any> {
+  lookup(uid = this.userKey.getValue()): AngularFirestoreDocument<any> {
     const currentUid = this.userKey.getValue();
     if (currentUid !== uid) {
       this.profileRef = this.userCollection.doc(uid);
@@ -74,8 +74,8 @@ export class UserService {
     const { displayName, email, emailVerified, phoneNumber, photoURL } = fields;
     const profile = Object.assign({}, { displayName }, { email }, { emailVerified }, { phoneNumber }, { photoURL });
     const docRef = this.userCollection.doc(uid);
-    return docRef.ref.get().then(document => {
-      if (document.exists) {
+    return docRef.ref.get().then(({ exists }) => {
+      if (exists) {
         return docRef.update({ ...profile, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
       }
       return docRef.set({ ...profile, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
