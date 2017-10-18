@@ -155,6 +155,15 @@ function getDirection(p1, p2) {
 
 }
 
+exports.updateAuthRecord = functions.firestore.document('/user/{uid}')
+  .onUpdate(event => {
+    const { uid } = event.params;
+    const newData = event.data.data();
+    const { displayName, email, photoURL } = newData;
+
+    return firebaseAdmin.auth().updateUser(uid, { displayName, email, photoURL });
+  });
+
 function cleanRTDBChildren(event) {
   const ref = event.data.ref.parent;
   const now = Date.now();
