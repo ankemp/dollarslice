@@ -70,9 +70,8 @@ export class UserService {
     return this.profileRef;
   }
 
-  private updateDB(uid = this.userKey.getValue(), fields: any): Promise<void> {
-    const { displayName, email, emailVerified, phoneNumber, photoURL } = fields;
-    const profile = Object.assign({}, { displayName }, { email }, { emailVerified }, { phoneNumber }, { photoURL });
+  private updateDB(fields: any, uid = this.userKey.getValue()): Promise<void> {
+    const profile = Object.assign({}, { ...fields });
     const docRef = this.userCollection.doc(uid);
     return docRef.ref.get().then(({ exists }) => {
       const timestamp = firebase.firestore.FieldValue.serverTimestamp();
@@ -83,33 +82,10 @@ export class UserService {
     });
   }
 
-  updateProfile(field: string, value: string): Promise<null | Error> {
-    return new Promise((Resolve, Reject) => {
-      this.user.subscribe(state => {
-        if (state) {
-          switch (field) {
-            case 'email':
-              state.updateEmail(value)
-                .then(Resolve).catch(Reject);
-              break;
-
-            case 'displayName':
-              state.updateProfile({ displayName: value, photoURL: state.photoURL })
-                .then(Resolve).catch(Reject);
-              break;
-
-            case 'photoURL':
-              state.updateProfile({ displayName: state.displayName, photoURL: value })
-                .then(Resolve).catch(Reject);
-              break;
-
-            default:
-              Reject(new Error('No field given'));
-              break;
-          }
-        }
-      });
-    });
+  updateProfile(field: string, value: string): Promise<void> {
+    const update = {};
+    update[field] = value;
+    return this.updateDB(update);
   }
 
 }
