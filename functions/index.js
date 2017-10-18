@@ -49,7 +49,7 @@ exports.ocrProcessListener = functions.storage.object()
         const docRef = serialCol.doc(serial);
         docRef.get().then(doc => {
           if (!doc.exists) {
-            docRef.set({ serial, image: object.name, timestamp: Date.now() });
+            docRef.set({ serial, image: object.name, timestamp: new Date() });
           }
         });
         return serial;
