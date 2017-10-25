@@ -1,11 +1,11 @@
 const functions = require('firebase-functions');
-const firebaseAdmin = require('firebase-admin');
+const admin = require('firebase-admin');
 const gcs = require('@google-cloud/storage')();
 const vision = require('@google-cloud/vision')();
 const Yelp = require('yelp-api-v3'); // https://github.com/kristenlk/yelp-api-v3
 const _ = require('lodash');
 const math = require('mathjs');
-firebaseAdmin.initializeApp(functions.config().firebase)
+admin.initializeApp(functions.config().firebase)
 
 // Cut off time. Child nodes older than this will be deleted.
 const CUT_OFF_TIME = 2 * 60 * 60 * 1000; // 2 Hours in milliseconds.
@@ -30,10 +30,10 @@ exports.ocrProcessListener = functions.storage.object()
     const gcsImageUri = `gs://${object.bucket}/${object.name}`;
     const image = { source: { gcsImageUri } };
 
-    const sdb = firebaseAdmin.firestore();
+    const sdb = admin.firestore();
     const serialCol = sdb.collection('serial');
 
-    const db = firebaseAdmin.database();
+    const db = admin.database();
     const key = _.last(_.split(object.name, '/'));
     const itemRef = db.ref(`scan-queue/${key}`);
     const statusRef = itemRef.child('status');
@@ -161,7 +161,7 @@ exports.updateAuthRecord = functions.firestore.document('/user/{uid}')
     const newData = event.data.data();
     const { displayName, email, photoURL } = newData;
 
-    return firebaseAdmin.auth().updateUser(uid, { displayName, email, photoURL });
+    return admin.auth().updateUser(uid, { displayName, email, photoURL });
   });
 
 function cleanRTDBChildren(event) {
