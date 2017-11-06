@@ -4,11 +4,22 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { FileStorageService } from './file-storage.service';
 import { SerialService } from './serial.service';
 import { NavigatorRefService } from './navigator-ref.service';
+import { WindowRefService } from './window-ref.service';
 
 @Injectable()
 export class CameraService {
+  // https://github.com/GoogleChromeLabs/snapshot
   private _navigator: Navigator;
-  private constraints = <MediaStreamConstraints>{ video: { facingMode: { exact: 'environment' } } };
+  private _window: Window;
+  private SUPPORTS_IMAGE_CAPTURE = 'ImageCapture' in this._window;
+  private SUPPORTS_MEDIA_DEVICES = 'mediaDevices' in this._navigator;
+  private streamConstraints: MediaStreamConstraints = {
+    video: {
+      facingMode: { exact: 'environment' },
+      width: { ideal: 540 },
+      height: { ideal: 960 }
+    }
+  };
 
   public player: HTMLVideoElement;
   public snapshot: HTMLCanvasElement;
@@ -19,24 +30,24 @@ export class CameraService {
     public file: FileStorageService,
     private serial: SerialService,
     private navigatorService: NavigatorRefService,
+    private windowService: WindowRefService
   ) {
     this._navigator = navigatorService.nativeNavigator;
-    if (this._navigator.mediaDevices && this._navigator.mediaDevices.getUserMedia) {
-      console.log('getUserMedia ready');
-    } else {
-      alert('Browser not supported');
+    this._window = windowService.nativeWindow;
+    if (!this.SUPPORTS_MEDIA_DEVICES) {
+      throw new Error('Browser not supported');
     }
   }
 
   requestPermission(): Promise<MediaStream> {
-    return this._navigator.mediaDevices.getUserMedia(this.constraints);
+    return this._navigator.mediaDevices.getUserMedia(this.streamConstraints);
   }
 
   hasPermission(): Promise<boolean> {
     return this._navigator.mediaDevices.enumerateDevices()
       .then(devices => devices.filter(device => device.kind === 'videoinput' && device.label))
       .then(videoDevices => {
-        if (videoDevices.length >= 1) {
+        if (videoDevices.length) {
           return true;
         }
         return false;
@@ -51,7 +62,7 @@ export class CameraService {
 
   startStream(): void {
     this._navigator.mediaDevices
-      .getUserMedia(this.constraints)
+      .getUserMedia(this.streamConstraints)
       .then((stream: MediaStream) => {
         this.player.srcObject = stream;
       });
@@ -64,16 +75,17 @@ export class CameraService {
   }
 
   capture(): void {
-    this.context.drawImage(this.player, 0, -100, 500, 700);
+    this.snapshot.width = this.player.width;
+    this.snapshot.height = this.player.height;
+    this.context.drawImage(this.player, 0, -100);
     this.stopStream();
   }
 
-  private toBlob(): Promise<Blob> {
-    return new Promise(Resolve => {
-      this.snapshot.toBlob(blob => {
-        return Resolve(blob);
-      });
+  private async toBlob(canvas = this.snapshot, type = 'image/jpeg'): Promise<Blob> {
+    const result: Promise<Blob> = new Promise((Resolve) => {
+      canvas.toBlob((blob: Blob) => Resolve(blob), type);
     });
+    return result;
   }
 
   save(): Promise<void> {
@@ -84,7 +96,7 @@ export class CameraService {
           return snapshot;
         })
         .then(snapshot => {
-          this.toBlob()
+          return this.toBlob()
             .then((blob: Blob) => {
               snapshot.update({ status: 'uploading' });
               return this.file.upload(snapshot.key, blob, 'serial');
